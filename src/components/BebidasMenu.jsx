@@ -64,24 +64,46 @@ const BebidasMenu = () => {
 
   const sendOrder = async () => {
     const mesa = localStorage.getItem('mesa');
-  
-    const productosParaEnviar = cart.map(bebida => ({
-      bebidaId: bebida._id,
-      nombre: bebida.nombre,
-      cantidad: bebida.cantidad || 1,
-      descripcion: bebida.descripcion,  // Asegúrate de incluir la descripción
-      especificaciones: bebida.especificaciones,
-      categoria: bebida.categoria,
-      precio: bebida.precio || 0,  // Aquí lo cambiaste a un valor numérico
-    }));
-  
-    console.log(productosParaEnviar);
     
-    const total = productosParaEnviar.reduce((acc, bebida) => {
-      const precioBebida = bebida.precio || 0;
-      return acc + (precioBebida * bebida.cantidad);
-    }, 0);
+    // Filtramos y creamos listas separadas para platos y bebidas
+    const bebidasParaEnviar = cart
+      .filter(item => item.tipo === 'bebida')
+      .map(bebida => ({
+        bebidaId: bebida._id,
+        nombre: bebida.nombre,
+        cantidad: bebida.cantidad || 1,
+        descripcion: bebida.descripcion,
+        especificaciones: bebida.especificaciones,
+        categoria: bebida.categoria,
+        precio: bebida.precio || 0,
+        acompañante: bebida.acompañante,
+      }));
   
+    const platosParaEnviar = cart
+      .filter(item => item.tipo === 'plato')
+      .map(plato => ({
+        platoId: plato._id,
+        nombre: plato.nombre,
+        cantidad: plato.cantidad || 1,
+        descripcion: plato.descripcion,
+        especificaciones: plato.especificaciones,
+        categoria: plato.categoria,
+        precio: plato.precio || 0,
+      }));
+    
+    console.log("Bebidas para enviar:", bebidasParaEnviar);
+    console.log("Platos para enviar:", platosParaEnviar);
+  
+    const total = cart.reduce((acc, item) => {
+      const precioItem = item.precio || 0;
+      const cantidad = item.cantidad || 1;  // Establece cantidad como 1 si es undefined
+      console.log(`Precio Item: ${precioItem}, Cantidad: ${cantidad}`);
+      return acc + (precioItem * cantidad);
+    }, 0);
+    
+    console.log("Total:", total);
+    
+
     if (!mesa) {
       console.error("El campo 'mesa' es obligatorio");
       return;
@@ -89,10 +111,11 @@ const BebidasMenu = () => {
   
     const orderData = {
       mesa: mesa,
-      bebidas: productosParaEnviar,
+      bebidas: bebidasParaEnviar,
+      platos: platosParaEnviar,
       total: total.toFixed(2),
-    }  
-
+    };
+  
     try {
       const response = await axios.post("http://192.168.1.132:3000/api/pedidos", orderData);
       if (response.data && response.data.message) {
@@ -109,6 +132,7 @@ const BebidasMenu = () => {
       setOpenSnackbar(true);
     }
   };
+  
   const removeFromCart = (platoId) => {
     setCart(prevCart => {
       const updatedCart = prevCart.filter(plato => plato._id !== platoId);

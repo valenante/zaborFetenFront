@@ -65,6 +65,7 @@ const PlatoCard = ({ plato, onAddToCart }) => {
       puntoCoccion: selectedPuntoCoccion,
       especificacion: selectedEspecificacion,
       croquetas: selectedCroquetas,
+      tipo: 'plato',
     };
 
     onAddToCart(platoParaCarrito);

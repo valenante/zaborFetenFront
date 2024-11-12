@@ -3,22 +3,18 @@ import { Card, CardContent, Typography, Button, List, ListItem, ListItemText, Di
 import MuiAlert from '@mui/material/Alert';
 
 const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
-  const [openSnackbar, setOpenSnackbar] = useState(false); // Estado para mostrar el Snackbar
-  const [snackbarMessage, setSnackbarMessage] = useState(''); // Estado para el mensaje del Snackbar
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  // Filtra los items de cart en platos y bebidas
+  const platos = cart.filter((item) => item.tipo === 'plato');
+  const bebidas = cart.filter((item) => item.tipo === 'bebida');
 
   const getTotal = () => {
-    return cart.reduce((total, plato) => {
-
-      // Si el plato es "Surtido de Croquetas", se debe usar selectedPrice
-      if (plato.nombre === "Surtido de Croquetas") {
-        return total + plato.croquetas.precio; // Usa el selectedPrice para el Surtido
-      }
-
-      // Si es otro plato, sumar su precio directamente
-      return total + plato.precio;
+    return cart.reduce((total, item) => {
+      return total + item.precio;
     }, 0).toFixed(2);
   };
-
 
   const handleSendOrder = async () => {
     if (typeof sendOrder === 'function') {
@@ -35,10 +31,9 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
       console.error('sendOrder no es una función');
     }
   };
-  
 
   const handleCloseSnackbar = () => {
-    setOpenSnackbar(false); // Cierra el Snackbar
+    setOpenSnackbar(false);
   };
 
   return (
@@ -47,91 +42,29 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
         <Typography variant="h5" gutterBottom style={{ color: '#54146c', fontWeight: 'bold', textAlign: 'center' }}>
           Carrito de Compras
         </Typography>
-  
-        {/* Lista de platos en el carrito */}
-        {cart.length === 0 ? (
-          <Typography variant="body1" style={{ color: '#888', textAlign: 'center' }}>El carrito está vacío</Typography>
+
+        {/* Lista de Platos */}
+        <Typography variant="h6" style={{ color: '#54146c', fontWeight: 'bold', marginTop: '20px' }}>
+          Platos
+        </Typography>
+        {platos.length === 0 ? (
+          <Typography variant="body1" style={{ color: '#888', textAlign: 'center' }}>No hay platos en el carrito</Typography>
         ) : (
           <List>
-            {cart.map((plato) => (
+            {platos.map((plato) => (
               <ListItem key={plato._id} style={{ marginBottom: '15px', backgroundColor: '#ffffff', borderRadius: '10px', padding: '15px', boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)' }}>
                 <ListItemText
-                  primary={
-                    <Typography variant="h6" style={{ color: '#333', fontWeight: 'bold' }}>
-                      {plato.nombre}
-                    </Typography>
-                  }
+                  primary={<Typography variant="h6" style={{ color: '#333', fontWeight: 'bold' }}>{plato.nombre}</Typography>}
                   secondary={
                     <>
-                      <Typography variant="body1" style={{ color: '#555' }}>
-                        Cantidad: {plato.cantidad} {/* Muestra la cantidad */}
-                      </Typography>
-                      <Typography variant="body2" style={{ color: '#555' }}>
-                        Precio: ${plato.precio * plato.cantidad} {/* Precio total por cantidad */}
-                      </Typography>
-  
-                      {/* Ingredientes */}
+                      <Typography variant="body1" style={{ color: '#555' }}>Cantidad: {plato.cantidad}</Typography>
+                      <Typography variant="body2" style={{ color: '#555' }}>Precio: ${plato.precio}</Typography>
+                      {/* Muestra ingredientes si existen */}
                       {plato.ingredientes && (
                         <>
-                          <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>
-                            Ingredientes:
-                          </Typography>
+                          <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>Ingredientes:</Typography>
                           {plato.ingredientes.map((ingrediente, index) => (
-                            <Typography key={index} variant="body2" style={{ color: '#777' }}>
-                              - {ingrediente}
-                            </Typography>
-                          ))}
-                        </>
-                      )}
-  
-                      {/* Opciones personalizables */}
-                      {plato.opcionesPersonalizables && Object.keys(plato.opcionesPersonalizables).length > 0 && (
-                        <>
-                          <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>
-                            Opciones personalizables:
-                          </Typography>
-                          {Object.entries(plato.opcionesPersonalizables).map(([opcionTipo, valor], index) => (
-                            <Typography key={index} variant="body2" style={{ color: '#777' }}>
-                              {opcionTipo}: {valor}
-                            </Typography>
-                          ))}
-                        </>
-                      )}
-  
-                      {/* Punto de cocción */}
-                      {plato.puntoCoccion && (
-                        <>
-                          <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>
-                            Punto de cocción:
-                          </Typography>
-                          <Typography variant="body2" style={{ color: '#777' }}>
-                            {plato.puntoCoccion}
-                          </Typography>
-                        </>
-                      )}
-  
-                      {/* Especificación */}
-                      {plato.especificacion && (
-                        <>
-                          <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>
-                            Especificación:
-                          </Typography>
-                          <Typography variant="body2" style={{ color: '#777' }}>
-                            {plato.especificacion}
-                          </Typography>
-                        </>
-                      )}
-  
-                      {/* Mostrar croquetas seleccionadas */}
-                      {plato.croquetas && Object.keys(plato.croquetas).length > 0 && (
-                        <>
-                          <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>
-                            Croquetas seleccionadas:
-                          </Typography>
-                          {Object.keys(plato.croquetas).map((key, index) => (
-                            <Typography key={index} variant="body2" style={{ color: '#777' }}>
-                              {key !== "selectedSurtido" && `${plato.croquetas[key]}`}
-                            </Typography>
+                            <Typography key={index} variant="body2" style={{ color: '#777' }}>- {ingrediente}</Typography>
                           ))}
                         </>
                       )}
@@ -150,13 +83,55 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
             ))}
           </List>
         )}
-  
+
+        {/* Lista de Bebidas */}
+        <Typography variant="h6" style={{ color: '#54146c', fontWeight: 'bold', marginTop: '20px' }}>
+          Bebidas
+        </Typography>
+        {bebidas.length === 0 ? (
+          <Typography variant="body1" style={{ color: '#888', textAlign: 'center' }}>No hay bebidas en el carrito</Typography>
+        ) : (
+          <List>
+            {bebidas.map((bebida) => (
+              <ListItem key={bebida._id} style={{ marginBottom: '15px', backgroundColor: '#ffffff', borderRadius: '10px', padding: '15px', boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)' }}>
+                <ListItemText
+                  primary={<Typography variant="h6" style={{ color: '#333', fontWeight: 'bold' }}>{bebida.nombre}</Typography>}
+                  secondary={
+                    <>
+                      <Typography variant="body1" style={{ color: '#555' }}>Cantidad: {bebida.cantidad}</Typography>
+                      <Typography variant="body2" style={{ color: '#555' }}>Precio: ${bebida.precio}</Typography>
+                      {/* Muestra ingredientes si existen */}
+                      {bebida.ingredientes && (
+                        <>
+                          <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>Ingredientes:</Typography>
+                          {bebida.ingredientes.map((ingrediente, index) => (
+                            <Typography key={index} variant="body2" style={{ color: '#777' }}>- {ingrediente}</Typography>
+                          ))}
+                        </>
+                      )}
+                      <Typography variant="body2" style={{ color: '#555', marginTop: '10px' }}>Acompañante: {bebida.acompañante}</Typography>
+                    </>
+                  }
+                />
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => onRemoveFromCart(bebida._id)}
+                  style={{ color: '#54146c', borderColor: '#54146c', fontWeight: 'bold' }}
+                >
+                  Eliminar
+                </Button>
+              </ListItem>
+            ))}
+          </List>
+        )}
+
         {/* Total de la compra */}
         <Divider style={{ margin: '20px 0', backgroundColor: '#e0e0e0' }} />
         <Typography variant="h6" style={{ color: '#333', textAlign: 'center' }}>
-          Total: ${getTotal()} {/* Aquí se muestra el total */}
+          Total: ${getTotal()}
         </Typography>
-  
+
         {/* Botón de enviar pedido */}
         <Button
           onClick={handleSendOrder}
@@ -173,7 +148,7 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
         >
           Enviar Pedido
         </Button>
-  
+
         {/* Snackbar de éxito */}
         <Snackbar
           open={openSnackbar}
@@ -187,6 +162,6 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
       </CardContent>
     </Card>
   );
-}
+};
 
 export default Cart;
