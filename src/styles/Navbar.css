@@ -1,0 +1,48 @@
+.align-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: 50px;
+    height: 100%; /* Ajusta según el alto del contenedor */
+    font-size: 20px;
+    color: #620375;
+}
+
+.large-text {
+    font-size: 1.1rem; /* Ajusta según necesites */
+}
+
+.contact-text {
+    font-size: 1rem; /* Ajusta según necesites */
+}
+
+.text-purple {
+    color: #620375; /* Color morado */
+}
+
+/* Asegúrate de que no haya estilos de hover que cambien el color */
+.text-purple:hover {
+    color: #4e0249; /* Color morado más oscuro para el hover (opcional) */
+}
+
+/* Revisa que no haya un estilo que sobrescriba el color */
+.text-decoration-none {
+    text-decoration: none; /* Elimina el subrayado */
+}
+.custom-link {
+    background-color: rgb(108 124 180);
+    text-decoration: none;       /* Elimina el subrayado */
+    color: white;              /* Morado brillante */
+    padding: 10px 20px;          /* Añade relleno para hacer el enlace más ancho */
+    display: inline-block;       /* Permite aplicar padding sin cambiar el estilo del enlace */
+    border-radius: 5px;          /* Bordes ligeramente redondeados */
+    font-size: 1.2em;            /* Incrementa el tamaño de la fuente */
+    font-weight: bold;           /* Aplica negrita */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Añade una transición suave */
+  }
+  
+  .custom-link:hover {
+    background-color: rgb(78, 94, 155);   /* Color de fondo al pasar el cursor */
+    color: #fff;                 /* Cambia el color del texto a blanco */
+  }
+  

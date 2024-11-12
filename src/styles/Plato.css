@@ -1,0 +1,174 @@
+/* Color de las letras */
+.plato-title, .plato-description, .plato-price, .plato-modal-title, .plato-ingredients-title {
+    color: #54146c; /* El color de las letras */
+  }
+
+  .plato-price{
+    font-weight: 600;
+    font-size: 18px;
+  }
+  
+  /* Contenedores con borde */
+  .custom-container {
+    border: 2px solid rgb(190, 95, 225); /* Color de borde */
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Borde redondeado para la imagen */
+  .rounded-img {
+    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Modal personalizado */
+  .plato-modal-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #54146c;
+  }
+  
+  .plato-modal {
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .plato-ingredients-title {
+    font-size: 1.25rem;
+    margin-top: 15px;
+    color: #54146c;
+  }
+  
+  /* Botón de quitar ingrediente */
+  .btn-outline-danger {
+    border-color: rgb(190, 95, 225);
+    color: rgb(190, 95, 225);
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: rgb(190, 95, 225);
+    color: white;
+  }
+  
+/* Estilo para el modal */
+.plato-modal {
+  width: 80%; /* Ajusta el tamaño del modal al 80% del ancho */
+  max-width: 600px; /* Limita el ancho máximo */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo para el título del modal (nombre del plato) */
+.plato-modal-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #54146c; /* Color morado para resaltar */
+  margin-bottom: 15px;
+  text-align: center; /* Centra el título */
+}
+
+/* Estilo para los ingredientes */
+.plato-ingredients-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 20px;
+}
+
+/* Estilo para la lista de ingredientes */
+.list-unstyled {
+  padding-left: 0;
+}
+
+.list-unstyled li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+/* Estilo para el botón "Quitar" */
+.list-unstyled button {
+  padding: 5px 10px;
+  background-color: #a84139; /* Rojo para el botón */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.list-unstyled button:hover {
+  background-color: #d32f2f; /* Rojo más oscuro al pasar el mouse */
+}
+
+/* Estilo para los campos de selección */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Estilo para los labels */
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+  display: block;
+}
+
+/* Estilo para los select */
+.custom-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.custom-select:focus {
+  border-color: #6a0dad; /* Borde morado al hacer foco */
+  background-color: #f4e7f0; /* Fondo morado claro */
+  outline: none; /* Elimina el borde azul predeterminado */
+}
+
+/* Estilo para los botones de acción en el modal */
+.MuiDialogActions-root {
+  padding-top: 15px;
+}
+
+.MuiDialogActions-root button {
+  padding: 10px 20px;
+  font-weight: 600;
+}
+
+.MuiDialogActions-root .MuiButton-root:first-child {
+  background-color: #a84139; /* Rojo para el botón Cancelar */
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.MuiDialogActions-root .MuiButton-root:first-child:hover {
+  background-color: #a84139; /* Rojo más oscuro para hover */
+}
+
+.MuiDialogActions-root .MuiButton-root:nth-child(2) {
+  background-color: #414f7f; /* Morado para el botón Agregar */
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.MuiDialogActions-root .MuiButton-root:nth-child(2):hover {
+  background-color: #9c27b0; /* Morado más oscuro para hover */
+}

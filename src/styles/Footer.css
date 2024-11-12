@@ -1,0 +1,12 @@
+.footer {
+    text-align: center;
+    padding: 20px 0; /* Ajusta el espacio vertical según sea necesario */
+}
+
+.social-icons {
+    margin: 10px 0; /* Espacio entre los iconos y el texto */
+}
+
+.social-icons svg {
+    margin: 0 10px; /* Espacio horizontal entre los iconos */
+}
