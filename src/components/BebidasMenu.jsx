@@ -122,6 +122,7 @@ const BebidasMenu = () => {
         setSnackbarMessage(response.data.message);
         setOpenSnackbar(true);
         setCart([]); // Vaciar carrito después de enviar el pedido
+        localStorage.removeItem('cart');  // Limpiar el carrito en localStorage también
       } else {
         setSnackbarMessage('Error al enviar el pedido.');
         setOpenSnackbar(true);
@@ -150,19 +151,23 @@ const BebidasMenu = () => {
       <Navbar
         selectedCategory={selectedCategory}
         onCategoryChange={onCategoryChange}
-                cartCount={cart.length}
+        cartCount={cart.length}
         categories={categories}
         onCartClick={toggleCartVisibility}
       />
-
-      <div>
-        {bebidas
-          .filter(bebida => !selectedCategory || bebida.categoria === selectedCategory)
-          .map(bebida => (
-            <BebidaCard key={bebida._id} bebida={bebida} onAddToCart={addToCart} mesa={mesa}/>
-          ))}
+  
+      <div className="container">
+        <div className="row">
+          {bebidas
+            .filter(bebida => !selectedCategory || bebida.categoria === selectedCategory)
+            .map(bebida => (
+              <div className="col-md-6 mb-4" key={bebida._id}>
+                <BebidaCard bebida={bebida} onAddToCart={addToCart} mesa={mesa} />
+              </div>
+            ))}
+        </div>
       </div>
-
+  
       {isCartVisible && (
         <Dialog open={isCartVisible} onClose={toggleCartVisibility}>
           <DialogContent>
@@ -170,7 +175,7 @@ const BebidasMenu = () => {
           </DialogContent>
         </Dialog>
       )}
-
+  
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
@@ -179,6 +184,7 @@ const BebidasMenu = () => {
       />
     </div>
   );
+  
 };
 
 export default BebidasMenu;

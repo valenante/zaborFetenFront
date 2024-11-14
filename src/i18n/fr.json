@@ -1,0 +1,268 @@
+{ "fr": {
+    "menu": [
+      {
+        "name": "Croquettes Mexicaines",
+        "description": "Délicieuses croquettes farcies de poulet épicé, enrobées de pâte à nachos croquante, et une touche de guacamole (deux unités).",
+        "price": "4,2€"
+      },
+      {
+        "name": "Tartare de Bœuf",
+        "description": "Bœuf finement haché, servi cru, mariné à la moutarde de Dijon, miel de canne, mayonnaise aux câpres, cornichons et oignons.",
+        "price": "16,5€"
+      },
+      {
+        "name": "Tartare de Salchichón de Málaga",
+        "description": "Salchichón de Málaga finement coupé et servi cru, mariné à la moutarde de Dijon, miel de canne, mayonnaise aux câpres, cornichons et oignons.",
+        "price": "8,9€"
+      },
+      {
+        "name": "Plateau de Charcuterie et Fromage",
+        "description": "Plateau de fromages fins servi avec des fruits secs et de la confiture de fraises (demandez au serveur le fromage du jour, options sans gluten et sans noix disponibles).",
+        "price": "12€"
+      },
+      {
+        "name": "Plateau de Fromages pour 2",
+        "description": "Plateau de fromages fins servi avec des fruits secs et de la confiture de fraises (demandez au serveur le fromage du jour, options sans gluten et sans noix disponibles).",
+        "price": "Ración - 2€"
+      },
+      {
+        "name": "Plateau de Fromages pour 4",
+        "description": "Plateau de fromages fins servi avec des fruits secs et de la confiture de fraises (demandez au serveur le fromage du jour, options sans gluten et sans noix disponibles).",
+        "price": "16€"
+      },
+      {
+        "name": "Flamenquín de Córdoba",
+        "description": "Flamenquín de porc (jambon roulé et porc pané) avec du piment et du fromage, servi sur un lit de pommes de terre.",
+        "price": "8€"
+      },
+      {
+        "name": "Asperges Grillées",
+        "description": "Asperges grillées enveloppées dans du bacon avec du fromage de chèvre fondu.",
+        "price": "Tapa - 6€, Ración - 11€"
+      },
+      {
+        "name": "Toast de Chichilla de Morcilla",
+        "description": "Toast croustillant avec de la chichilla de morcilla, saucisse épicée ibérique (de Fuente Obejuna, Córdoba).",
+        "price": "Tapa - 4,3€, Ración - 6,9€"
+      },
+      {
+        "name": "Assortiment de Croquettes",
+        "description": "Sélection délicieuse de six croquettes, comprenant deux de chaque de nos saveurs uniques.",
+        "price": "Tapa - 3,8€, Ración - 7,8€"
+      },
+      {
+        "name": "Sucettes de Poulet",
+        "description": "Sucettes de poulet croustillantes et tendres avec une sauce au miel et à la moutarde.",
+        "price": "Tapa - 6,6€, Ración - 8€"
+      },
+      {
+        "name": "Artichauts Grillés",
+        "description": "Artichauts frais grillés (deux unités) avec un œuf de caille et des morceaux de bacon croustillant (option sans gluten disponible).",
+        "price": "8,3€"
+      },
+      {
+        "name": "Torreznos de Soria",
+        "description": "Un plat idéal à partager, servi avec des piments et du citron.",
+        "price": "9€"
+      },
+      {
+        "name": "Brownie Marocain",
+        "description": "Pomme grillée, morcilla de los Pedroches, glace au fromage manchego et pain à la mozzarella.",
+        "price": "8,4€"
+      },
+      {
+        "name": "Taco de Porc Effiloché",
+        "description": "Deux tacos de maïs croustillants farcis de guacamole, porc effiloché dans une sauce BBQ, pico de gallo (mélange de légumes) et citron vert.",
+        "price": "7,6€"
+      },
+      {
+        "name": "Mini Frankfurt de Bœuf",
+        "description": "Mini hot-dog avec saucisse de bœuf ou saucisse végétarienne, pico de gallo (mélange de poivrons rouges et verts et d'oignon rouge), mayonnaise au kimchi, servi avec du yuca frit.",
+        "price": "4,9€"
+      },
+      {
+        "name": "Patacón",
+        "description": "Porc effiloché avec sofrito de tomate, sauce au fromage à trois fromages et guacamole sur plantain vert frit (deux unités). Peut être végétarien ou végan.",
+        "price": "6,6€"
+      },
+      {
+        "name": "Brioche Calamari",
+        "description": "Sandwich de calamars sur pain brioche avec sauce sriracha, servi avec du yuca (deux unités).",
+        "price": "8,3€"
+      },
+      {
+        "name": "Morue Panée",
+        "description": "Morue panée avec aïoli à l'ail.",
+        "price": "Tapa - 7,4€, Ración - 10,6€"
+      },
+      {
+        "name": "Tacos de Thon",
+        "description": "Thon mariné dans une mayonnaise sriracha, servi sur des tacos de maïs avec guacamole.",
+        "price": "5,9€"
+      },
+      {
+        "name": "Plateau d'Anchois",
+        "description": "Anchois frais servis avec du pain cristal croustillant et du gaspacho. Une expérience unique pour les amateurs d'anchois (option sans gluten disponible).",
+        "price": "10,6€"
+      },
+      {
+        "name": "Salade Russe",
+        "description": "Salade russe faite avec des pommes de terre, des carottes, du thon, des œufs, des olives noires et une mousse de mayonnaise (option sans gluten disponible).",
+        "price": "Tapa - 4,2€, Ración - 6,9€"
+      },
+      {
+        "name": "Sucettes de Crevettes",
+        "description": "Crevettes panées servies avec une sauce au chili sucré.",
+        "price": "Tapa - 4,5€, Ración - 7,5€"
+      },
+      {
+        "name": "Croquettes d'Épinards",
+        "description": "Délicieuses croquettes d'épinards maison avec du fromage de chèvre.",
+        "price": "Tapa - 3,8€, Ración - 7,8€"
+      },
+      {
+        "name": "Mini Burger Végétarien",
+        "description": "Burger à la galette végétarienne avec fromage de chèvre, poivron piquillo, oignons caramélisés et œuf de caille, servi avec des frites de patate douce.",
+        "price": "4,9€"
+      },
+      {
+        "name": "Asperges Grillées au Fromage de Chèvre",
+        "description": "Asperges grillées avec du fromage de chèvre fondu.",
+        "price": "Tapa - 5,5€, Ración - 9,6€"
+      },
+      {
+        "name": "Mini Frankfurt Végétarien",
+        "description": "Mini hot-dog avec saucisse végétarienne, pico de gallo (mélange de poivrons rouges et verts et d'oignon rouge), servi avec du yuca.",
+        "price": "4,9€"
+      },
+      {
+        "name": "Patatas Bravas",
+        "description": "Pommes de terre en dés, garnies de notre délicieuse mousse de sauce brava épicée.",
+        "price": "Tapa - 4,2€, Ración - 6,9€"
+      },
+      {
+        "name": "Fromage Camembert",
+        "description": "Fromage Camembert frit, croustillant à l'extérieur et crémeux à l'intérieur, servi avec de la chutney de tomate.",
+        "price": "Tapa - 5,6€, Ración - 8,4€"
+      },
+      {
+        "name": "Salade Russe Végétarienne",
+        "description": "Salade russe végétarienne faite avec des pommes de terre, des carottes, des œufs, des olives noires et une mousse de mayonnaise (option sans gluten disponible).",
+        "price": "Tapa - 4,2€, Ración - 6,9€"
+      },
+      {
+        "name": "Artichauts Frais Grillés (Végétarien)",
+        "description": "Artichauts frais grillés (deux unités) avec un œuf de caille et du bacon végétarien.",
+        "price": "7,6€"
+      },
+      {
+        "name": "Patacón Végétarien",
+        "description": "Mélange de légumes, sauce au trois fromages et guacamole sur une banane plantain frite (deux unités), peut être demandé végan.",
+        "price": "6.6€"
+      },
+      {
+        "name": "Salade Fetén aux Crevettes",
+        "description": "Salade de légumes frais, crevettes panées, fromage de chèvre, graines de courge avec une vinaigrette au miel et à la moutarde.",
+        "price": "10.9€"
+      },
+      {
+        "name": "Salade Fetén au Poulet",
+        "description": "Salade avec du poulet, fromage de chèvre, graines de courge avec vinaigrette au miel et à la moutarde. (Vous pouvez choisir entre poulet frit ou poulet grillé).",
+        "price": "10.9€"
+      },
+      {
+        "name": "Tomates avec Ventresca",
+        "description": "Tomates avec ventresca et huile d'olive, peut être demandé végan.",
+        "price": "10.3€"
+      },
+      {
+        "name": "Salade de Saumon",
+        "description": "Saumon fumé, mélange de salades, fromage manchego, noix, avocat et vinaigrette Fetén.",
+        "price": "13.2€"
+      },
+      {
+        "name": "Salade de Thon Rouge",
+        "description": "Salade de thon rouge avec avocat, fromage manchego, noix, algues wakame et tomates cerises.",
+        "price": "13.2€"
+      },
+      {
+        "name": "Mini Burger de Thon",
+        "description": "Mini burger de thon rouge, filet de thon rouge (cuit saignant), oignon caramélisé, mayonnaise au kimchi accompagné de patate douce frite.",
+        "price": "5.2€"
+      },
+      {
+        "name": "Mini Burger de Poulet",
+        "description": "Mini burger de poulet avec fromage de chèvre et oignon caramélisé, accompagné de patate douce frite.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Mini Burger de Bœuf",
+        "description": "Viande de bœuf, fromage de chèvre ou manchego et oignon caramélisé, accompagnés de patate douce frite.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Mini Burger Mexicain",
+        "description": "Mini burger mexicain avec viande de bœuf, guacamole, sauce chipotle et oignon caramélisé, accompagné de patate douce frite.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Mini Burger de Boudin Noir",
+        "description": "Délicieux mini burger de boudin noir avec oignon caramélisé et fromage manchego, accompagné de patate douce frite.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Churrasquito de Poulet",
+        "description": "Churrasquito de poulet avec sauce chimichurri, accompagné de frites.",
+        "price": "16€"
+      },
+      {
+        "name": "Filet de Bœuf",
+        "description": "Filet de bœuf (250 à 300 grammes) au barbecue, accompagné de pommes de terre arrugadas et de légumes de saison.",
+        "price": "23.6€"
+      },
+      {
+        "name": "Pluma Ibérique",
+        "description": "Pluma ibérique tranchée, accompagnée de pommes de terre, poivrons de Padrón et asperges enveloppées dans du bacon.",
+        "price": "20€"
+      },
+      {
+        "name": "Pulpe Fetén",
+        "description": "Pulpe avec pommes de terre, crème de patate douce et miel.",
+        "price": "18€"
+      },
+      {
+        "name": "Saumon",
+        "description": "Saumon grillé avec pommes de terre, asperges sauvages et poivrons piquillos.",
+        "price": "17.3€"
+      },
+      {
+        "name": "Dorada Grillée",
+        "description": "Dorada grillée avec asperges sauvages, tomates cerises et pommes de terre, accompagnée de sauce au boniato avec miel et sauce verte (huile d'olive, ail et persil).",
+        "price": "15.6€"
+      },
+      {
+        "name": "Brownie",
+        "description": "Délicieux brownie au chocolat.",
+        "price": "6.6€"
+      },
+      {
+        "name": "Tarte au Fromage",
+        "description": "Classique tarte au fromage, douce et crémeuse.",
+        "price": "6.6€"
+      },
+      {
+        "name": "Mort au Chocolat",
+        "description": "Dessert décadent au chocolat avec une texture riche et douce.",
+        "price": "6.6€"
+      },
+      {
+        "name": "Torrija",
+        "description": "Torrija trempée dans du lait et de l'œuf, frite et saupoudrée de sucre.",
+        "price": "6.6€"
+      },
+      {
+        "contact": "zaborfeten@gmail.com | 665 92 54 13 et 622 024 285"
+      }
+    ]
+  }
+}

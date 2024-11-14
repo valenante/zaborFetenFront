@@ -12,6 +12,7 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
   const [conHielo, setConHielo] = useState(false);  // Estado para "Con hielo"
   const [refresco, setRefresco] = useState({ refrescoSeleccionado: '', tomarSolo: false }); // Estado combinado
   const [refrescos, setRefrescos] = useState([]);  // Estado para almacenar los refrescos disponibles
+  const [cantidad, setCantidad] = useState(1); // Variable para almacenar la cantidad seleccionada
 
   // Cargar refrescos desde la base de datos
   useEffect(() => {
@@ -50,6 +51,11 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
     setRefresco({ ...refresco, tomarSolo: event.target.checked, refrescoSeleccionado: '' }); // Si toma solo, vacía el refresco
   };
 
+  const handleCantidadChange = (e) => {
+    setCantidad(e.target.value);
+  };
+
+
   const handleAddToCart = () => {
     const bebidaParaCarrito = {
       mesa: mesa,
@@ -64,6 +70,7 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
       tipo: 'bebida',
       conHielo: conHielo,
       acompañante: refresco.tomarSolo ? 'Solo' : refresco.refrescoSeleccionado,  // Si toma solo, no asigna refresco
+      cantidad,
     };
 
     console.log(bebidaParaCarrito);
@@ -79,12 +86,6 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
         <div className="col-md-8">
           <h3 className="plato-title">{bebida.nombre}</h3>
           <p className="plato-description">{bebida.descripcion}</p>
-          <Button 
-            onClick={handleAddClick} 
-            sx={{ backgroundColor: '#414f7f', color: 'white', border: 'none', '&:hover': { backgroundColor: '#6c7cb4' } }}
-          >
-            Agregar al carrito
-          </Button>
         </div>
         <div className="col-md-4 text-center">
           {bebida.img && (
@@ -94,20 +95,23 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
             <div>{bebida.precio && `$${bebida.precio.toFixed(2)}`}</div>
           </div>
         </div>
+
+        <div className="col-12 text-center mt-3"> {/* Aseguramos que el botón se alinee correctamente en pantallas pequeñas */}
+          <Button
+            onClick={handleAddClick}
+            sx={{ backgroundColor: '#414f7f', color: 'white', border: 'none', '&:hover': { backgroundColor: '#6c7cb4' } }}
+          >
+            Agregar al carrito
+          </Button>
+        </div>
       </div>
-  
+
       {/* Modal */}
       <Dialog open={isModalOpen} onClose={handleCloseModal} className="plato-modal">
         <DialogTitle className="plato-modal-title">{bebida.nombre}</DialogTitle>
         <DialogContent>
           <div>{bebida.descripcion}</div>
-  
-          {/* Opción "Con hielo" */}
-          <FormControlLabel
-            control={<Checkbox checked={conHielo} onChange={handleConHieloChange} />}
-            label="Con hielo"
-          />
-  
+
           {/* Selección de refresco o "Tomar solo" */}
           {['ron', 'whisky', 'vodka', 'ginebra', 'licor'].includes(bebida.categoria) && (
             <>
@@ -126,23 +130,36 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
                     Selecciona un refresco
                   </MenuItem>
                   {refrescos.map((refresco, index) => (
-                    <MenuItem key={index} value={refresco._id}> {/* Usar un valor único, como el ID */}
-                      {refresco.nombre}  {/* Mostrar el nombre del refresco */}
+                    <MenuItem key={index} value={refresco._id}>
+                      {refresco.nombre}
                     </MenuItem>
                   ))}
                 </Select>
               )}
             </>
           )}
+          {/* Input para seleccionar la cantidad */}
+          <div className="mt-3">
+            <label htmlFor="cantidad">Cantidad:</label>
+            <input
+              id="cantidad"
+              type="number"
+              value={cantidad}
+              onChange={handleCantidadChange}
+              min="1"
+              className="form-control"
+              style={{ width: '100px', marginTop: '10px' }}
+            />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal}>Cancelar</Button>
           <Button onClick={handleAddToCart} color="primary">
-            Agregar al carrito
+            Agregar
           </Button>
         </DialogActions>
       </Dialog>
-  
+
       {/* Snackbar */}
       <Snackbar
         open={openSnackbar}
@@ -158,7 +175,9 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
         }}
       />
     </div>
+
   );
-}  
+}
+
 
 export default BebidaCard;

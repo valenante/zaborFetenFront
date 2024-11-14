@@ -1,0 +1,265 @@
+{
+    "es": {
+        "carta": [
+            {
+                "nombre": "Croquetas Mexicanas",
+                "descripcion": "Deliciosas croquetas rellenas de pollo picantito, con rebozado de nacho crujiente y con un puntito de guacamole (dos unidades).",
+                "precio": "4.2€"
+            },
+            {
+                "nombre": "Steak Tartar",
+                "descripcion": "Suculenta carne de ternera cortada finamente y servida cruda, marinado con mostaza dijon, miel de caña, mayonesa con trocitos de alcaparras, pepinillos y cebolla.",
+                "precio": "16.5€"
+            },
+            {
+                "nombre": "Tartar de Salchichón de Málaga",
+                "descripcion": "Tradicional salchichón de Málaga cortado finamente y servido crudo, macerado con mostaza dijon, miel de caña, mayonesa con trocitos de alcaparras, pepinillos y cebolla.",
+                "precio": "8.9€"
+            },
+            {
+                "nombre": "Plato de Jamón y Quesos",
+                "descripcion": "Tabla de quesos gourmet acompañados de frutos secos y mermelada de fresa (preguntar al camarero por el queso del día, se puede solicitar libre de gluten y frutos secos).",
+                "precio": "12€"
+            },
+            {
+                "nombre": "Tabla de Quesos para 2",
+                "descripcion": "Tabla de quesos gourmet acompañados de frutos secos y mermelada de fresa (preguntar al camarero por el queso del día, se puede solicitar libre de gluten y frutos secos).",
+                "precio": "Ración - $2"
+            },
+            {
+                "nombre": "Tabla de Quesos para 4",
+                "descripcion": "Tabla de quesos gourmet acompañados de frutos secos y mermelada de fresa (preguntar al camarero por el queso del día, se puede solicitar libre de gluten y frutos secos).",
+                "precio": "16€"
+            },
+            {
+                "nombre": "Flamenquín Cordobés",
+                "descripcion": "Flamenquín de cerdo (rollito de jamón y cerdo empanado), especialidad cordobesa preparada con pimiento y queso, sobre una cama de patatas.",
+                "precio": "8€"
+            },
+            {
+                "nombre": "Espárragos a la Plancha",
+                "descripcion": "Espárragos a la plancha envueltos en bacon con queso de cabra gratinado.",
+                "precio": "Tapa - $6, Ración - $11"
+            },
+            {
+                "nombre": "Rebanaita de Chichilla de Morcilla",
+                "descripcion": "Tostitas crujientes con chichilla de morcilla Ibérica Picante (Fuente Obejuna, Córdoba).",
+                "precio": "Tapa - $4.3, Ración - $6.9"
+            },
+            {
+                "nombre": "Surtido de Croquetas",
+                "descripcion": "Le ofrece una deliciosa selección de seis croquetas carnivoras, incluidas dos de cada uno de nuestros sabores únicos.",
+                "precio": "Tapa - $3.8, Ración - $7.8"
+            },
+            {
+                "nombre": "Lagrimitas de Pollo",
+                "descripcion": "Lagrimitas de pollo crujientes y tiernos con salsa de mostaza y miel.",
+                "precio": "Tapa - $6.6, Ración - $8"
+            },
+            {
+                "nombre": "Alcachofas Frescas",
+                "descripcion": "Alcachofas (dos unidades) frescas a la barbacoa con huevo de codorniz y virutas de bacon (se puede solicitar opción libre de gluten).",
+                "precio": "8.3€"
+            },
+            {
+                "nombre": "Torreznos de Soria",
+                "descripcion": "Plato ideal para compartir, acompañado de guindillas y lima.",
+                "precio": "9€"
+            },
+            {
+                "nombre": "Brownie de Morcilla",
+                "descripcion": "Manzana caramelizada a la plancha, timbal de morcilla de los Pedroches, helado de queso manchego y regaña de queso mozzarella.",
+                "precio": "8.4€"
+            },
+            {
+                "nombre": "Taquito de Pulled Pork",
+                "descripcion": "Dos Taquito de maíz crujiente hecho con una cama de guacamole, cerdo desmechado con salsa barbacoa, pico de gallo (mix de verduras) y lima.",
+                "precio": "7.6€"
+            },
+            {
+                "nombre": "Mini Frankfurt de Ternera",
+                "descripcion": "Mini perrito caliente de salchicha de ternera o salchicha vegetariana, pico de gallo (mix de verduras mexicana, cebolla morada, pimiento verde y rojo), mayonesa de kimchi y acompañado de yuca frita.",
+                "precio": "4.9€"
+            },
+            {
+                "nombre": "Patacón",
+                "descripcion": "Carne de cerdo desmechada hecha con un sofrito de tomate, salsa de tres quesos y guacamole sobre un plátano verde frito (dos unidades), se puede solicitar vegetariano o vegano.",
+                "precio": "6.6€"
+            },
+            {
+                "nombre": "Brioche de Calamar",
+                "descripcion": "Bocadillo de calamar en pan brioche con salsa de siracha acompañado de Yuca (dos unidades).",
+                "precio": "8.3€"
+            },
+            {
+                "nombre": "Bacalao Rebozado",
+                "descripcion": "Bacalao rebozado con alioli.",
+                "precio": "Tapa - $7.4, Ración - $10.6"
+            },
+            {
+                "nombre": "Taquitos de Atún",
+                "descripcion": "Atún cortado y macerado en mayonesa de siracha, sobre una cama de guacamole y un taquito de maíz.",
+                "precio": "5.9€"
+            },
+            {
+                "nombre": "Tendido de Anchoas",
+                "descripcion": "Degusta nuestras anchoas 0.0 acompañadas de un pan cristal crujiente y salmorejo. Esta experiencia única está especialmente diseñada para los amantes de la anchoa que quieren descubrir los nuevos sabores de Fetén (se puede solicitar libre de gluten).",
+                "precio": "10.6€"
+            },
+            {
+                "nombre": "Ensaladilla Rusa",
+                "descripcion": "Ensaladilla Rusa hecha con patata, zanahoria, atún, huevo, aceitunas negras y mousse de mahonesa (se puede solicitar sin gluten).",
+                "precio": "Tapa - $4.2, Ración - $6.9"
+            },
+            {
+                "nombre": "Piruletas de Langostinos",
+                "descripcion": "Langostinos rebozados en pan rallado servido con una deliciosa salsa de chili dulce.",
+                "precio": "Tapa - $4.5, Ración - $7.5"
+            },
+            {
+                "nombre": "Croquetas de Espinaca",
+                "descripcion": "Deliciosas croquetas caseras de espinaca con queso de cabra.",
+                "precio": "Tapa - $3.8, Ración - $7.8"
+            },
+            {
+                "nombre": "Mini Burger Vegetariana",
+                "descripcion": "Burger de Paty Vegetariana, queso de cabra, pimiento del piquillo, cebolla caramelizada y huevo de codorniz, acompañada de batata fritas.",
+                "precio": "4.9€"
+            },
+            {
+                "nombre": "Espárragos con Queso de Cabra",
+                "descripcion": "Espárragos trigueros a la plancha con queso de cabra gratinado.",
+                "precio": "Tapa - $5.5, Ración - $9.6"
+            },
+            {
+                "nombre": "Mini Frankfurt Vegetariano",
+                "descripcion": "Mini Perrito caliente con salchicha vegetariana, pico de gallo (mix de pimiento rojo, verde y cebolla morada), acompañado de Yuca.",
+                "precio": "4.9€"
+            },
+            {
+                "nombre": "Patatas Bravas",
+                "descripcion": "Daditos de patatas recubiertas de nuestra sabrosa espuma de salsa brava.",
+                "precio": "Tapa - $4.2, Ración - $6.9"
+            },
+            {
+                "nombre": "Queso Camembert",
+                "descripcion": "Quesitos Camembert Fritos, dorados por fuera y cremosos por dentro, servidos con nuestro chutney de tomate.",
+                "precio": "Tapa - $5.6, Ración - $8.4"
+            },
+            {
+                "nombre": "Ensaladilla Rusa Vegetariana",
+                "descripcion": "Ensaladilla Rusa hecha con patata, zanahoria, huevo, aceitunas negras y mousse de mahonesa (se puede solicitar sin gluten)."
+            },
+            {
+                "name": "Alcachofas Frescas Vegetarianas",
+                "description": "Alcachofas (dos unidades) frescas a la barbacoa con huevo de codorniz (se puede solicitar opción vegana o libre de gluten).",
+                "price": "8.3€"
+            },
+            {
+                "name": "Patacón Vegetariano",
+                "description": "Mix de verduras, salsa de tres quesos y guacamole sobre un plátano verde frito (dos unidades), se puede solicitar vegano.",
+                "price": "6.6€"
+            },
+            {
+                "name": "Ensalada Fetén de Langostinos",
+                "description": "Ensalada de verduras frescas, gambas rebozadas, queso de cabra, pipas de calabaza con aderezo de miel y mostaza.",
+                "price": "10.9€"
+            },
+            {
+                "name": "Ensalada Fetén de Pollo",
+                "description": "Ensalada con Pollo, queso de cabra, pipas de calabaza con aliño de miel y mostaza. (Puedes elegir entre pollo frito o pollo a la plancha).",
+                "price": "10.9€"
+            },
+            {
+                "name": "Tomatico con Ventresca",
+                "description": "Tomatico con Ventresca y aceite de oliva, se puede solicitar vegano.",
+                "price": "10.3€"
+            },
+            {
+                "name": "Ensalada de Salmón",
+                "description": "Salmón ahumado, mix de lechugas, queso manchego, nueces, aguacate y vinagreta Fetén.",
+                "price": "13.2€"
+            },
+            {
+                "name": "Ensalada de Atún rojo",
+                "description": "Ensalada de Atún rojo con aguacate, quesito manchego, nueces, algas wakame y tomate cherry.",
+                "price": "13.2€"
+            },
+            {
+                "name": "Mini Burguer de Atún",
+                "description": "Mini Burguer de atún rojo, lomo de atún rojo (poco hecho), cebolla caramelizada, mayonesa de Kimchi y acompañada de batata frita.",
+                "price": "5.2€"
+            },
+            {
+                "name": "Mini Burger de Pollo",
+                "description": "Mini Hamburguesa de Pollo con queso de cabra y cebolla caramelizada, acompañada de boniato frito.",
+                "price": "4.9€"
+            },
+            {
+                "name": "Mini Burger de Vacuno",
+                "description": "Carne de ternera, queso de cabra o queso manchego y cebolla caramelizada acompañados de boniato frito.",
+                "price": "4.9€"
+            },
+            {
+                "name": "Mini Burger Mexicana",
+                "description": "Mini hamburguesa mexicana con carne de res, guacamole, salsa chipotle y cebolla caramelizada, acompañada de boniato frito.",
+                "price": "4.9€"
+            },
+            {
+                "name": "Mini Burger de Morcilla",
+                "description": "Deliciosa hamburguesa de morcilla con cebolla caramelizada y queso manchego, acompañada de boniato frito.",
+                "price": "4.9€"
+            },
+            {
+                "name": "Churrasquito de Pollo",
+                "description": "Churrasquito de pollo con salsa chimichurri, acompañado de patatas fritas.",
+                "price": "16€"
+            },
+            {
+                "name": "Solomillo de ternera",
+                "description": "Solomillo de ternera (De 250 a 300 gramos) a la barbacoa, acompañado de patatas arrugadas y verduras de temporada.",
+                "price": "23.6€"
+            },
+            {
+                "name": "Plato de Pluma Ibérica",
+                "description": "Pluma Ibérica cortada, acompañada de patatas, pimientos del padrón y espárragos envueltos en bacon.",
+                "price": "20€"
+            },
+            {
+                "name": "Pulpo Fetén",
+                "description": "Pulpo con patatas, crema de boniato y miel.",
+                "price": "18€"
+            },
+            {
+                "name": "Salmón",
+                "description": "Salmón a la plancha con patatas, espárragos trigueros y pimientos del piquillo.",
+                "price": "17.3€"
+            },
+            {
+                "name": "Dorada a la plancha",
+                "description": "Dorada a la plancha con espárragos trigueros, tomates cherries y patatas, acompañada de salsa de boniato con miel y salsita verde (aceite de oliva, ajo y perejil).",
+                "price": "15.6€"
+            },
+            {
+                "name": "Brownie",
+                "description": "Delicioso brownie de chocolate.",
+                "price": "6.6€"
+            },
+            {
+                "name": "Tarta de Queso",
+                "description": "Clásica tarta de queso, suave y cremosa.",
+                "price": "6.6€"
+            },
+            {
+                "name": "Muerte por Chocolate",
+                "description": "Postre decadente de chocolate con una textura rica y suave.",
+                "price": "6.6€"
+            },
+            {
+                "name": "Torrija",
+                "description": "Torrija empapada en leche y huevo, frita y espolvoreada con azúcar.",
+                "price": "6.6€"
+            }
+        ]
+    }
+}

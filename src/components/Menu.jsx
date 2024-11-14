@@ -90,7 +90,7 @@ const MenuPage = () => {
         descripcion: plato.descripcion,
         size: plato.size,
         opcionesPersonalizables: plato.opcionesPersonalizables,
-        puntoCoccion: plato.puntoCoccion,
+        puntosDeCoccion: plato.puntosDeCoccion,
         especificaciones: plato.especificacion,
       };
 

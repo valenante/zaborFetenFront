@@ -10,7 +10,8 @@
   
   /* Contenedores con borde */
   .custom-container {
-    border: 2px solid rgb(190, 95, 225); /* Color de borde */
+    border-top: 2px solid rgb(190, 95, 225); /* Color de borde */
+    border-bottom: 2px solid rgb(190, 95, 225); /* Color de borde */
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;

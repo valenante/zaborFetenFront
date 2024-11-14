@@ -11,7 +11,7 @@ const PlatoCard = ({ plato, onAddToCart }) => {
   const [ingredientes, setIngredientes] = useState(plato.ingredientes);
   const [descripcion, setDescripcion] = useState(plato.descripcion);
   const [selectedSize, setSelectedSize] = useState('');
-  const [selectedPuntoCoccion, setSelectedPuntoCoccion] = useState('');
+  const [selectedPuntosDeCoccion, setSelectedPuntosDeCoccion] = useState('');
   const [selectedEspecificacion, setSelectedEspecificacion] = useState('');
   const [precio, setPrecio] = useState(0);
   const [cantidad, setCantidad] = useState(1); // Variable para almacenar la cantidad seleccionada
@@ -36,11 +36,42 @@ const PlatoCard = ({ plato, onAddToCart }) => {
     }));
   };
 
-  const handlePuntoCoccionChange = (e) => setSelectedPuntoCoccion(e.target.value);
+  const handlePuntosDeCoccionChange = (e) => setSelectedPuntosDeCoccion(e.target.value);
   const handleEspecificacionChange = (e) => setSelectedEspecificacion(e.target.value);
 
   const handleCantidadChange = (e) => {
-    setCantidad(e.target.value);
+    let value = e.target.value;
+
+    // Si el valor está vacío, no hacemos nada, lo dejamos vacío temporalmente
+    if (value === "") {
+      setCantidad(value);
+      return;
+    }
+
+    // Convertir a número para validarlo
+    value = Number(value);
+
+    // Si es NaN (no es un número), lo ignoramos
+    if (isNaN(value)) {
+      return;
+    }
+
+    // Ajustar el valor si está fuera del rango
+    if (value < 1) {
+      value = 1;
+    } else if (value > 10) {
+      value = 10;
+    }
+
+    // Actualizar el estado con el valor corregido
+    setCantidad(value);
+  };
+
+  const handleBlur = () => {
+    // Si el campo está vacío al perder el foco, lo ponemos en 1
+    if (cantidad === "") {
+      setCantidad(1);
+    }
   };
 
   const handleAddToCart = () => {
@@ -62,7 +93,7 @@ const PlatoCard = ({ plato, onAddToCart }) => {
       precio: selectedPrice * cantidad, // Multiplicamos el precio por la cantidad
       cantidad, // Agregamos la cantidad al objeto
       opcionesPersonalizables: selectedOptions,
-      puntoCoccion: selectedPuntoCoccion,
+      puntosDeCoccion: selectedPuntosDeCoccion,
       especificacion: selectedEspecificacion,
       croquetas: selectedCroquetas,
       tipo: 'plato',
@@ -83,25 +114,34 @@ const PlatoCard = ({ plato, onAddToCart }) => {
   return (
     <div className="container my-4">
       <div className="row align-items-center custom-container">
-        <div className="col-md-8">
+        <div className="col-12 col-md-8 mb-3 mb-md-0">
           <h3 className="plato-title">{plato.nombre}</h3>
           <p className="plato-description">{plato.descripcion}</p>
-          <Button onClick={handleAddClick} sx={{ backgroundColor: '#414f7f', color: 'white', border: 'none', '&:hover': { backgroundColor: '#6c7cb4' } }}>
+          <Button
+            onClick={handleAddClick}
+            sx={{
+              backgroundColor: '#414f7f',
+              color: 'white',
+              border: 'none',
+              '&:hover': { backgroundColor: '#6c7cb4' }
+            }}
+            className="order-2 order-md-3"  // Asegura que en pantallas grandes el botón esté debajo
+          >
             Agregar al carrito
           </Button>
         </div>
-        <div className="col-md-4 text-center">
+        <div className="col-12 col-md-4 text-center order-1 order-md-2"> {/* Imagen arriba en pantallas pequeñas */}
           <img src={plato.imagen} alt={plato.nombre} className="img-fluid rounded-img" />
           <div className="plato-price mt-2">
-            {plato.precios.tapa && <div>Tapa - ${plato.precios.tapa}</div>}
-            {plato.precios.racion && <div>Ración - ${plato.precios.racion}</div>}
+            {plato.precios.tapa && <div translate="no">Tapa - ${plato.precios.tapa}</div>}
+            {plato.precios.racion && <div translate="no">Ración - ${plato.precios.racion}</div>}
             {!plato.precios.tapa && !plato.precios.racion && <div>{plato.precios.precio}€</div>}
           </div>
         </div>
       </div>
 
       {/* Modal */}
-      <Dialog open={isModalOpen} onClose={handleCloseModal} className="plato-modal">
+      <Dialog open={isModalOpen} onClose={handleCloseModal} className="plato-modal" sx={{ width: '100%' }}>
         <DialogTitle className="plato-modal-title">{plato.nombre}</DialogTitle>
         <DialogContent>
           <div>{plato.descripcion}</div>
@@ -127,15 +167,14 @@ const PlatoCard = ({ plato, onAddToCart }) => {
             handleOptionChange={handleOptionChange}
             selectedEspecificacion={selectedEspecificacion}
             handleEspecificacionChange={handleEspecificacionChange}
-            selectedPuntoCoccion={selectedPuntoCoccion}
-            handlePuntoCoccionChange={handlePuntoCoccionChange}
+            selectedPuntosDeCoccion={selectedPuntosDeCoccion}
+            handlePuntosDeCoccionChange={handlePuntosDeCoccionChange}
           />
 
           {plato.nombre === 'Surtido de Croquetas' && (
             <SurtidoCroquetasForm onUpdateCroquetas={setSelectedCroquetas} plato={plato} />
           )}
 
-          {/* Input para seleccionar la cantidad */}
           <div className="mt-3">
             <label htmlFor="cantidad">Cantidad:</label>
             <input
@@ -143,17 +182,20 @@ const PlatoCard = ({ plato, onAddToCart }) => {
               type="number"
               value={cantidad}
               onChange={handleCantidadChange}
+              onBlur={handleBlur} // Detecta cuando el usuario sale del input
               min="1"
+              max="10"
               className="form-control"
               style={{ width: '100px', marginTop: '10px' }}
             />
           </div>
 
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal}>Cancelar</Button>
           <Button onClick={handleAddToCart} color="primary">
-            Agregar al carrito
+            Agregar
           </Button>
         </DialogActions>
       </Dialog>
@@ -174,6 +216,6 @@ const PlatoCard = ({ plato, onAddToCart }) => {
       />
     </div>
   );
-};
+}
 
 export default PlatoCard;

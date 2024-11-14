@@ -1,0 +1,266 @@
+{
+    "en":{
+    "menu": [
+      {
+        "name": "Mexican Croquettes",
+        "description": "Delicious croquettes filled with spicy chicken, crunchy nacho batter, and a hint of guacamole (two units).",
+        "price": "4.2€"
+      },
+      {
+        "name": "Steak Tartar",
+        "description": "Succulent finely chopped beef served raw, marinated with Dijon mustard, cane honey, mayonnaise with capers, pickles, and onions.",
+        "price": "16.5€"
+      },
+      {
+        "name": "Málaga Salchichón Tartar",
+        "description": "Traditional Málaga salchichón finely cut and served raw, marinated with Dijon mustard, cane honey, mayonnaise with capers, pickles, and onions.",
+        "price": "8.9€"
+      },
+      {
+        "name": "Ham and Cheese Platter",
+        "description": "Gourmet cheese platter served with dried fruits and strawberry jam (ask the waiter for today's cheese, gluten-free and nut-free options available).",
+        "price": "12€"
+      },
+      {
+        "name": "Cheese Platter for 2",
+        "description": "Gourmet cheese platter served with dried fruits and strawberry jam (ask the waiter for today's cheese, gluten-free and nut-free options available).",
+        "price": "Ración - 2€"
+      },
+      {
+        "name": "Cheese Platter for 4",
+        "description": "Gourmet cheese platter served with dried fruits and strawberry jam (ask the waiter for today's cheese, gluten-free and nut-free options available).",
+        "price": "16€"
+      },
+      {
+        "name": "Córdoba Flamenquín",
+        "description": "Pork flamenquín (rolled ham and breaded pork) with pimiento and cheese, served on a bed of potatoes.",
+        "price": "8€"
+      },
+      {
+        "name": "Grilled Asparagus",
+        "description": "Grilled asparagus wrapped in bacon with melted goat cheese.",
+        "price": "Tapa - 6€, Ración - 11€"
+      },
+      {
+        "name": "Chichilla de Morcilla Toast",
+        "description": "Crispy toast with chichilla de morcilla Iberian spicy sausage (from Fuente Obejuna, Córdoba).",
+        "price": "Tapa - 4.3€, Ración - 6.9€"
+      },
+      {
+        "name": "Croquette Assortment",
+        "description": "A delicious selection of six croquettes, including two of each of our unique flavors.",
+        "price": "Tapa - 3.8€, Ración - 7.8€"
+      },
+      {
+        "name": "Chicken Lollipops",
+        "description": "Crispy and tender chicken lollipops with honey mustard sauce.",
+        "price": "Tapa - 6.6€, Ración - 8€"
+      },
+      {
+        "name": "Grilled Artichokes",
+        "description": "Grilled fresh artichokes (two units) with quail egg and crispy bacon bits (gluten-free option available).",
+        "price": "8.3€"
+      },
+      {
+        "name": "Soria Torreznos",
+        "description": "An ideal dish for sharing, served with chili peppers and lime.",
+        "price": "9€"
+      },
+      {
+        "name": "Moroccan Brownie",
+        "description": "Grilled apple, morcilla de los Pedroches, manchego cheese ice cream, and mozzarella bread.",
+        "price": "8.4€"
+      },
+      {
+        "name": "Pulled Pork Taco",
+        "description": "Two crispy corn tacos filled with guacamole, shredded pork in BBQ sauce, pico de gallo (vegetable mix), and lime.",
+        "price": "7.6€"
+      },
+      {
+        "name": "Mini Beef Frankfurt",
+        "description": "Mini hot dog with beef sausage or vegetarian sausage, pico de gallo (mix of red and green peppers and red onion), mayonnaise with kimchi, served with fried yuca.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Patacón",
+        "description": "Shredded pork with tomato sofrito, three-cheese sauce, and guacamole on fried green plantain (two units). Can be made vegetarian or vegan.",
+        "price": "6.6€"
+      },
+      {
+        "name": "Brioche Calamari",
+        "description": "Squid sandwich on brioche bread with sriracha sauce, served with yuca (two units).",
+        "price": "8.3€"
+      },
+      {
+        "name": "Battered Cod",
+        "description": "Battered cod with garlic aioli.",
+        "price": "Tapa - 7.4€, Ración - 10.6€"
+      },
+      {
+        "name": "Tuna Tacos",
+        "description": "Tuna marinated in sriracha mayo, served on corn tacos with guacamole.",
+        "price": "5.9€"
+      },
+      {
+        "name": "Anchovy Platter",
+        "description": "Fresh anchovies served with crispy crystal bread and gazpacho. A unique experience for anchovy lovers (gluten-free option available).",
+        "price": "10.6€"
+      },
+      {
+        "name": "Russian Salad",
+        "description": "Russian salad made with potatoes, carrots, tuna, eggs, black olives, and mayonnaise mousse (gluten-free option available).",
+        "price": "Tapa - 4.2€, Ración - 6.9€"
+      },
+      {
+        "name": "Prawn Lollipops",
+        "description": "Breaded prawns served with a sweet chili sauce.",
+        "price": "Tapa - 4.5€, Ración - 7.5€"
+      },
+      {
+        "name": "Spinach Croquettes",
+        "description": "Delicious homemade spinach croquettes with goat cheese.",
+        "price": "Tapa - 3.8€, Ración - 7.8€"
+      },
+      {
+        "name": "Vegetarian Mini Burger",
+        "description": "Vegetarian patty burger with goat cheese, piquillo pepper, caramelized onions, and quail egg, served with sweet potato fries.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Grilled Asparagus with Goat Cheese",
+        "description": "Grilled asparagus with melted goat cheese.",
+        "price": "Tapa - 5.5€, Ración - 9.6€"
+      },
+      {
+        "name": "Vegetarian Mini Frankfurt",
+        "description": "Mini hot dog with vegetarian sausage, pico de gallo (mix of red and green peppers and red onion), served with yuca.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Patatas Bravas",
+        "description": "Diced potatoes topped with our delicious spicy brava sauce mousse.",
+        "price": "Tapa - 4.2€, Ración - 6.9€"
+      },
+      {
+        "name": "Camembert Cheese",
+        "description": "Fried Camembert cheese, crispy on the outside and creamy on the inside, served with tomato chutney.",
+        "price": "Tapa - 5.6€, Ración - 8.4€"
+      },
+      {
+        "name": "Vegetarian Russian Salad",
+        "description": "Vegetarian Russian salad made with potatoes, carrots, eggs, black olives, and mayonnaise mousse (gluten-free option available).",
+        "price": "Tapa - 4.2€, Ración - 6.9€"
+      },
+      {
+        "name": "Grilled Fresh Artichokes (Vegetarian)",
+        "description": "Fresh grilled artichokes (two units) with a quail egg (vegan or gluten-free options available upon request).",
+        "price": "8.3€"
+      },
+      {
+        "name": "Vegetarian Patacón",
+        "description": "Mixed vegetables, three-cheese sauce, and guacamole on fried green plantain (two units), vegan option available.",
+        "price": "6.6€"
+      },
+      {
+        "name": "Shrimp Fetén Salad",
+        "description": "Fresh vegetable salad with breaded shrimp, goat cheese, pumpkin seeds, and honey mustard dressing.",
+        "price": "10.9€"
+      },
+      {
+        "name": "Chicken Fetén Salad",
+        "description": "Salad with chicken, goat cheese, pumpkin seeds, and honey mustard dressing. (You can choose between fried or grilled chicken).",
+        "price": "10.9€"
+      },
+      {
+        "name": "Tomato with Ventresca",
+        "description": "Tomato with Ventresca tuna and olive oil, vegan option available.",
+        "price": "10.3€"
+      },
+      {
+        "name": "Salmon Salad",
+        "description": "Smoked salmon, mixed lettuces, manchego cheese, walnuts, avocado, and Fetén vinaigrette.",
+        "price": "13.2€"
+      },
+      {
+        "name": "Red Tuna Salad",
+        "description": "Red tuna salad with avocado, manchego cheese, walnuts, wakame seaweed, and cherry tomatoes.",
+        "price": "13.2€"
+      },
+      {
+        "name": "Tuna Mini Burger",
+        "description": "Mini tuna burger with seared tuna loin (rare), caramelized onion, kimchi mayo, and served with fried sweet potato.",
+        "price": "5.2€"
+      },
+      {
+        "name": "Chicken Mini Burger",
+        "description": "Mini chicken burger with goat cheese and caramelized onion, served with fried sweet potato.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Beef Mini Burger",
+        "description": "Beef patty, goat cheese or manchego cheese, and caramelized onion, served with fried sweet potato.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Mexican Mini Burger",
+        "description": "Mini Mexican burger with beef, guacamole, chipotle sauce, and caramelized onion, served with fried sweet potato.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Blood Sausage Mini Burger",
+        "description": "Delicious blood sausage burger with caramelized onion and manchego cheese, served with fried sweet potato.",
+        "price": "4.9€"
+      },
+      {
+        "name": "Chicken Churrasco",
+        "description": "Grilled chicken churrasco with chimichurri sauce, served with fried potatoes.",
+        "price": "16€"
+      },
+      {
+        "name": "Beef Tenderloin",
+        "description": "Beef tenderloin (250-300 grams) grilled, served with wrinkled potatoes and seasonal vegetables.",
+        "price": "23.6€"
+      },
+      {
+        "name": "Iberian Pluma Plate",
+        "description": "Iberian pluma cut, served with potatoes, padrón peppers, and bacon-wrapped asparagus.",
+        "price": "20€"
+      },
+      {
+        "name": "Fetén Octopus",
+        "description": "Octopus with potatoes, sweet potato cream, and honey.",
+        "price": "18€"
+      },
+      {
+        "name": "Salmon",
+        "description": "Grilled salmon with potatoes, asparagus, and piquillo peppers.",
+        "price": "17.3€"
+      },
+      {
+        "name": "Grilled Sea Bream",
+        "description": "Grilled sea bream with asparagus, cherry tomatoes, and potatoes, served with sweet potato honey sauce and green sauce (olive oil, garlic, and parsley).",
+        "price": "15.6€"
+      },
+      {
+        "name": "Brownie",
+        "description": "Delicious chocolate brownie.",
+        "price": "6.6€"
+      },
+      {
+        "name": "Cheesecake",
+        "description": "Classic creamy cheesecake.",
+        "price": "6.6€"
+      },
+      {
+        "name": "Chocolate Death",
+        "description": "Decadent chocolate dessert with a rich, smooth texture.",
+        "price": "6.6€"
+      },
+      {
+        "name": "Torrija",
+        "description": "French toast soaked in milk and egg, fried and sprinkled with sugar.",
+        "price": "6.6€"
+      }
+    ]
+  }
+}
