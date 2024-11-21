@@ -43,9 +43,9 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
   };
 
   const handleSendOrder = async () => {
-    if (typeof sendOrder === 'function') {
       try {
         await sendOrder(cart);
+        console.log(cart);
         setSnackbarMessage('Pedido enviado con éxito');
         setOpenSnackbar(true);
       } catch (error) {
@@ -53,9 +53,6 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
         setSnackbarMessage('Error al realizar el pedido');
         setOpenSnackbar(true);
       }
-    } else {
-      console.error('sendOrder no es una función');
-    }
   };
 
   const handleCloseSnackbar = () => {

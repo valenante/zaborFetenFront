@@ -22,6 +22,25 @@ const MenuPage = () => {
   const mesaFromUrl = searchParams.get('mesa');
   const mesa = mesaFromUrl || localStorage.getItem('mesa'); // Si la URL no tiene la mesa, la obtenemos de localStorage
 
+  if (mesa) {
+    // Enviar solicitud para cambiar el estado de la mesa a "abierta"
+    fetch(`http:///192.168.1.132:3000/api/mesas/${mesa}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        estado: 'abierta', 
+      }),
+    })
+    .then(response => response.json())
+    .catch(error => {
+      console.error('Error al actualizar el estado de la mesa:', error);
+      // Manejar el error si la solicitud falla
+    });
+  }
+  
+
   // Guardar el número de mesa en localStorage cuando esté disponible
   useEffect(() => {
     if (mesaFromUrl) {
@@ -81,77 +100,86 @@ const MenuPage = () => {
   
 
   const sendOrder = async () => {
-    const productosParaEnviar = cart.map(plato => {
-      const basePlato = {
-        platoId: plato._id,
-        nombre: plato.nombre,
-        cantidad: plato.cantidad || 1,  // Aseguramos que la cantidad esté definida
-        ingredientes: plato.ingredientes,
-        descripcion: plato.descripcion,
-        size: plato.size,
-        opcionesPersonalizables: plato.opcionesPersonalizables,
-        puntosDeCoccion: plato.puntosDeCoccion,
-        especificaciones: plato.especificacion,
-      };
-
-      if (plato.nombre === "Surtido de Croquetas") {
-        // Mapear 'racion' y 'tapa' a valores numéricos si es necesario
-        const selectedOptionValue = plato.croquetas.selectedOption === "racion" ? 1 : 0; // Ejemplo de mapeo
-
-        return {
-          ...basePlato,
-          precios: [plato.croquetas.precio],  // Solo el precio seleccionado para croquetas
-          croquetas: {
-            selectedOption: selectedOptionValue,  // Convertir 'racion'/'tapa' a número
-            selectedPrice: plato.croquetas.selectedPrice,  // Precio de la opción seleccionada
-          },
-          tipoPorcion: plato.croquetas.tipoPorcion,  // Usar la opción seleccionada como tamaño
-          sabor: plato.croquetas.sabor,
-        };
-      } else {
-        return {
-          ...basePlato,
-          precios: plato.precio ? [plato.precio] : [],  // Usar el precio si está disponible
-        };
-      }
-    });
-
-    // Calcular el total de la orden
-    const total = productosParaEnviar.reduce((acc, plato) => {
-      const precioPlato = plato.precios[0] || 0;
-      return acc + (precioPlato * plato.cantidad);
-    }, 0);
-
-    // Verificar que mesa no sea null
+    // Separar platos y bebidas
+    const platos = cart.filter(item => item.tipo === 'plato');
+    const bebidas = cart.filter(item => item.tipo === 'bebida');
+  
+    // Preparar datos para los pedidos
+    const platosParaEnviar = platos.map(plato => ({
+      platoId: plato._id,
+      nombre: plato.nombre,
+      cantidad: plato.cantidad || 1,
+      ingredientes: plato.ingredientes,
+      descripcion: plato.descripcion,
+      size: plato.size,
+      opcionesPersonalizables: plato.opcionesPersonalizables,
+      puntosDeCoccion: plato.puntosDeCoccion,
+      especificaciones: plato.especificacion,
+      precios: plato.precio ? [plato.precio] : [],
+    }));
+  
+    console.log(platosParaEnviar.opcionesPersonalizables);
+  
+    const bebidasParaEnviar = bebidas.map(bebida => ({
+      bebidaId: bebida._id,
+      nombre: bebida.nombre,
+      cantidad: bebida.cantidad || 1,
+      ingredientes: bebida.ingredientes,
+      descripcion: bebida.descripcion,
+      conHielo: bebida.conHielo,
+      acompañante: bebida.acompañante,
+      precio: bebida.precio,
+      categoria: bebida.categoria,
+    }));
+  
+    // Calcular totales
+    const totalPlatos = platosParaEnviar.reduce((acc, plato) => acc + (plato.precios[0] || 0) * plato.cantidad, 0);
+    const totalBebidas = bebidasParaEnviar.reduce((acc, bebida) => acc + bebida.precio * bebida.cantidad, 0);
+  
     if (!mesa) {
       console.error("El campo 'mesa' es obligatorio");
-      return;  // Detener la ejecución si mesa no está definida
+      return;
     }
-
-    const orderData = {
-      mesa: mesa,  // Usamos la variable 'mesa' que ya has obtenido de la URL
-      platos: productosParaEnviar,
-      total: total.toFixed(2),  // Formateamos el total a 2 decimales
-    };
-
+  
     try {
-      // Llamar a la API para enviar el pedido
-      const response = await axios.post("http://192.168.1.132:3000/api/pedidos", orderData);
-      if (response.data && response.data.message) {
-        setSnackbarMessage(response.data.message);  // Mostrar mensaje de éxito
-        setOpenSnackbar(true);
-        setCart([]);  // Limpiar el carrito
-        localStorage.removeItem('cart');  // Limpiar el carrito en localStorage también
-      } else {
-        setSnackbarMessage('Error al enviar el pedido.');
-        setOpenSnackbar(true);
+      // Crear pedido de platos
+      if (platosParaEnviar.length > 0) {
+        const responsePlatos = await axios.post("http://192.168.1.132:3000/api/pedidos", {
+          mesa,
+          platos: platosParaEnviar,
+          total: totalPlatos.toFixed(2),
+        });
+  
+        if (responsePlatos.data && responsePlatos.data.message) {
+          console.log('Pedido de platos creado:', responsePlatos.data.message);
+        }
       }
+  
+      // Crear pedido de bebidas
+      if (bebidasParaEnviar.length > 0) {
+        const responseBebidas = await axios.post("http://192.168.1.132:3000/api/pedidoBebidas", {
+          mesa,
+          bebidas: bebidasParaEnviar,
+          total: totalBebidas.toFixed(2),
+        });
+  
+        if (responseBebidas.data && responseBebidas.data.message) {
+          console.log('Pedido de bebidas creado:', responseBebidas.data.message);
+        }
+      }
+  
+      // Limpiar carrito y mostrar mensaje
+      setSnackbarMessage('Pedido enviado con éxito.');
+      setOpenSnackbar(true);
+      setCart([]);
+      localStorage.removeItem('cart');
     } catch (error) {
       console.error('Error al realizar el pedido:', error);
       setSnackbarMessage('Error al enviar el pedido.');
       setOpenSnackbar(true);
     }
   };
+  
 
   const toggleCartVisibility = () => {
     setIsCartVisible(!isCartVisible);

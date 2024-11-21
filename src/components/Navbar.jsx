@@ -19,6 +19,7 @@ const Navbar = ({
 }) => {
   const [isOrdersModalOpen, setOrdersModalOpen] = useState(false);
   const [pedidos, setPedidos] = useState([]);
+  const [pedidosBebidas, setPedidosBebidas] = useState([]);
   const numeroMesa = localStorage.getItem('mesa');
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
@@ -38,6 +39,23 @@ const Navbar = ({
       console.error("Error al obtener los pedidos:", error);
     }
   };
+
+  useEffect(() => {
+    // Función para traer los pedidos desde la base de datos
+    const fetchPedidosBebidas = async () => {
+      try {
+        const response = await fetch(`http://192.168.1.132:3000/api/pedidoBebidas/mesa/${numeroMesa}`);
+        const data = await response.json();
+        setPedidos(data);
+      } catch (error) {
+        console.error("Error al obtener los pedidos:", error);
+      }
+    };
+
+    fetchPedidosBebidas();
+
+  }, [numeroMesa]);
+
 
   useEffect(() => {
     fetchPedidos(); // Llamada inicial al cargar el componente
@@ -108,8 +126,20 @@ const Navbar = ({
 
             <div className='text-center'>
               <IconButton onClick={() => toggleDrawer(true)}>
-                <MenuIcon sx={{ color: '#620375', margin: '10px' }} />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    backgroundColor: 'white',
+                    color: '#620375',
+                    fontWeight: '700',
+                    border: '2px solid #620375'
+                  }}
+                >
+                  mis pedidos
+                </Button>
               </IconButton>
+
               <Button
                 variant="contained"
                 color="primary"
@@ -166,44 +196,55 @@ const Navbar = ({
               <Box sx={{ width: 250, padding: '10px' }} role="presentation">
                 <h1>Mis pedidos</h1>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', margin: '20px' }}>
-                  {pedidos.length > 0 ? (
-                    pedidos.map((pedido, index) => (
-                      <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
-                        {/* Mostrar Platos */}
-                        {pedido.platos.length > 0 && (
-                          <div>
-                            <strong>Platos:</strong>
-                            {pedido.platos.map((plato, idx) => (
-                              <div key={idx} style={{ marginLeft: '10px' }}>
-                                <div>{plato.nombre} x{plato.cantidad}</div>
+                  {pedidos.length > 0 || pedidosBebidas.length > 0 ? (
+                    <>
+                      {/* Mostrar pedidos de platos */}
+                      {pedidos.length > 0 &&
+                        pedidos.map((pedido, index) => (
+                          <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
+                            {pedido.platos && pedido.platos.length > 0 && ( // Verificar que platos existe
+                              <div>
+                                <strong>Platos:</strong>
+                                {pedido.platos.map((plato, idx) => (
+                                  <div key={idx} style={{ marginLeft: '10px' }}>
+                                    <div>
+                                      {plato.nombre} x{plato.cantidad}
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
-                          </div>
-                        )}
+                            )}
+                          </Box>
+                        ))}
 
-                        {/* Mostrar Bebidas */}
-                        {pedido.bebidas.length > 0 && (
-                          <div>
-                            <strong><span translate="no">Bebidas:</span></strong>
-                            {pedido.bebidas.map((bebida, idx) => (
-                              <div key={idx} style={{ marginLeft: '10px' }}>
-                                <div>
-                                  <span translate="no">{bebida.nombre} </span>x{bebida.cantidad}
-                                </div>
+                      {/* Mostrar pedidos de bebidas */}
+                      {pedidosBebidas.length > 0 &&
+                        pedidosBebidas.map((pedido, index) => (
+                          <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
+                            {pedido.bebidas.length > 0 && (
+                              <div>
+                                <strong>
+                                  <span translate="no">Bebidas:</span>
+                                </strong>
+                                {pedido.bebidas.map((bebida, idx) => (
+                                  <div key={idx} style={{ marginLeft: '10px' }}>
+                                    <div>
+                                      <span translate="no">{bebida.nombre} </span>x{bebida.cantidad}
+                                    </div>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
-                          </div>
-                        )}
-
-                      </Box>
-                    ))
+                            )}
+                          </Box>
+                        ))}
+                    </>
                   ) : (
                     <div>No hay pedidos.</div>
                   )}
                 </div>
-
               </Box>
             </Drawer>
+
           </>
         ) : (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

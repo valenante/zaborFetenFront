@@ -99,6 +99,8 @@ const PlatoCard = ({ plato, onAddToCart }) => {
       tipo: 'plato',
     };
 
+    console.log(platoParaCarrito.opcionesPersonalizables);
+
     onAddToCart(platoParaCarrito);
     setIsModalOpen(false);
     setSnackbarMessage("Producto agregado correctamente");
