@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Button, List, ListItem, ListItemText, Divider, Snackbar } from '@mui/material';
+import { CardContent, Typography, Button, List, ListItem, ListItemText, Divider, Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 
 const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
@@ -8,7 +8,7 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
   const [acompañantes, setAcompañantes] = useState({}); // Estado para almacenar los nombres de acompañantes por ID
 
   // Filtra los items de cart en platos y bebidas
-  const platos = cart.filter((item) => item.tipo === 'plato');
+  const platos = cart.filter((item) => item.tipo === 'plato' || item.tipo === 'tapa' || item.tipo === 'racion');
   const bebidas = cart.filter((item) => item.tipo === 'bebida');
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
     }
 
     fetchAcompañantes();
-  }, [bebidas]);
+  }, [bebidas, acompañantes]);
 
 
   const getTotal = () => {
@@ -43,16 +43,15 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
   };
 
   const handleSendOrder = async () => {
-      try {
-        await sendOrder(cart);
-        console.log(cart);
-        setSnackbarMessage('Pedido enviado con éxito');
-        setOpenSnackbar(true);
-      } catch (error) {
-        console.error('Error al realizar el pedido:', error);
-        setSnackbarMessage('Error al realizar el pedido');
-        setOpenSnackbar(true);
-      }
+    try {
+      await sendOrder(cart);
+      setSnackbarMessage('Pedido enviado con éxito');
+      setOpenSnackbar(true);
+    } catch (error) {
+      console.error('Error al realizar el pedido:', error);
+      setSnackbarMessage('Error al realizar el pedido');
+      setOpenSnackbar(true);
+    }
   };
 
   const handleCloseSnackbar = () => {

@@ -16,7 +16,7 @@ const BebidasMenu = () => {
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  
+
   // Obtener el número de mesa de la URL o de localStorage si ya está guardado
   const mesaFromUrl = searchParams.get('mesa');
   const mesa = mesaFromUrl || localStorage.getItem('mesa'); // Si la URL no tiene la mesa, la obtenemos de localStorage
@@ -69,7 +69,7 @@ const BebidasMenu = () => {
     // Separar platos y bebidas
     const platos = cart.filter(item => item.tipo === 'plato');
     const bebidas = cart.filter(item => item.tipo === 'bebida');
-  
+
     // Preparar datos para los pedidos
     const platosParaEnviar = platos.map(plato => ({
       platoId: plato._id,
@@ -83,7 +83,7 @@ const BebidasMenu = () => {
       especificaciones: plato.especificacion,
       precios: plato.precio ? [plato.precio] : [],
     }));
-  
+
     const bebidasParaEnviar = bebidas.map(bebida => ({
       bebidaId: bebida._id,
       nombre: bebida.nombre,
@@ -95,16 +95,16 @@ const BebidasMenu = () => {
       precio: bebida.precio,
       categoria: bebida.categoria,
     }));
-  
+
     // Calcular totales
     const totalPlatos = platosParaEnviar.reduce((acc, plato) => acc + (plato.precios[0] || 0) * plato.cantidad, 0);
     const totalBebidas = bebidasParaEnviar.reduce((acc, bebida) => acc + bebida.precio * bebida.cantidad, 0);
-  
+
     if (!mesa) {
       console.error("El campo 'mesa' es obligatorio");
       return;
     }
-  
+
     try {
       // Crear pedido de platos
       if (platosParaEnviar.length > 0) {
@@ -113,12 +113,12 @@ const BebidasMenu = () => {
           platos: platosParaEnviar,
           total: totalPlatos.toFixed(2),
         });
-  
+
         if (responsePlatos.data && responsePlatos.data.message) {
           console.log('Pedido de platos creado:', responsePlatos.data.message);
         }
       }
-  
+
       // Crear pedido de bebidas
       if (bebidasParaEnviar.length > 0) {
         const responseBebidas = await axios.post("http://192.168.1.132:3000/api/pedidoBebidas", {
@@ -126,12 +126,12 @@ const BebidasMenu = () => {
           bebidas: bebidasParaEnviar,
           total: totalBebidas.toFixed(2),
         });
-  
+
         if (responseBebidas.data && responseBebidas.data.message) {
           console.log('Pedido de bebidas creado:', responseBebidas.data.message);
         }
       }
-  
+
       // Limpiar carrito y mostrar mensaje
       setSnackbarMessage('Pedido enviado con éxito.');
       setOpenSnackbar(true);
@@ -143,18 +143,18 @@ const BebidasMenu = () => {
       setOpenSnackbar(true);
     }
   };
-  
+
   const removeFromCart = (platoId) => {
     setCart(prevCart => {
       const updatedCart = prevCart.filter(plato => plato._id !== platoId);
-      
+
       // Actualiza el localStorage después de modificar el carrito
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-      
+
       return updatedCart;
     });
   };
-  
+
 
   return (
     <div>
@@ -165,11 +165,13 @@ const BebidasMenu = () => {
         categories={categories}
         onCartClick={toggleCartVisibility}
       />
-  
+
       <div className="container">
         <div className="row">
           {bebidas
-            .filter(bebida => !selectedCategory || bebida.categoria === selectedCategory)
+            .filter(bebida =>
+              (!selectedCategory || bebida.categoria === selectedCategory) && bebida.estado === 'habilitado'
+            )
             .map(bebida => (
               <div className="col-md-6 mb-4" key={bebida._id}>
                 <BebidaCard bebida={bebida} onAddToCart={addToCart} mesa={mesa} />
@@ -177,7 +179,7 @@ const BebidasMenu = () => {
             ))}
         </div>
       </div>
-  
+
       {isCartVisible && (
         <Dialog open={isCartVisible} onClose={toggleCartVisibility}>
           <DialogContent>
@@ -185,7 +187,7 @@ const BebidasMenu = () => {
           </DialogContent>
         </Dialog>
       )}
-  
+
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
@@ -194,7 +196,7 @@ const BebidasMenu = () => {
       />
     </div>
   );
-  
+
 };
 
 export default BebidasMenu;

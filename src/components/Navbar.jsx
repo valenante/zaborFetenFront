@@ -26,8 +26,6 @@ const Navbar = ({
   const buttonText = location.pathname.includes('bebidas') ? 'Comida' : 'Bebidas';
   const linkTo = location.pathname.includes('bebidas') ? '/menu' : '/bebidas';
   const isSmallScreen = useMediaQuery('(max-width:768px)'); // Correct media query
-  const [modalOpen, setModalOpen] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('');
 
   // Función para traer los pedidos desde la base de datos
   const fetchPedidos = async () => {
@@ -40,25 +38,19 @@ const Navbar = ({
     }
   };
 
-  useEffect(() => {
-    // Función para traer los pedidos desde la base de datos
-    const fetchPedidosBebidas = async () => {
-      try {
-        const response = await fetch(`http://192.168.1.132:3000/api/pedidoBebidas/mesa/${numeroMesa}`);
-        const data = await response.json();
-        setPedidos(data);
-      } catch (error) {
-        console.error("Error al obtener los pedidos:", error);
-      }
-    };
-
-    fetchPedidosBebidas();
-
-  }, [numeroMesa]);
-
+  const fetchPedidosBebidas = async () => {
+    try {
+      const response = await fetch(`http://192.168.1.132:3000/api/pedidoBebidas/mesa/${numeroMesa}`);
+      const data = await response.json();
+      setPedidosBebidas(data);
+    } catch (error) {
+      console.error("Error al obtener los pedidos:", error);
+    }
+  };
 
   useEffect(() => {
     fetchPedidos(); // Llamada inicial al cargar el componente
+    fetchPedidosBebidas();
 
     // Establecer un intervalo para actualizar los pedidos cada 5 segundos
     const intervalId = setInterval(fetchPedidos, 5000);
@@ -81,6 +73,7 @@ const Navbar = ({
 
   useEffect(() => {
     fetchPedidos();
+    fetchPedidosBebidas();
   }, [numeroMesa]);
 
   return (
@@ -194,56 +187,41 @@ const Navbar = ({
             </div>
             <Drawer anchor="left" open={drawerOpen} onClose={() => toggleDrawer(false)}>
               <Box sx={{ width: 250, padding: '10px' }} role="presentation">
-                <h1>Mis pedidos</h1>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', margin: '20px' }}>
-                  {pedidos.length > 0 || pedidosBebidas.length > 0 ? (
+                  {(pedidos.length > 0 || pedidosBebidas.length > 0) ? (
                     <>
                       {/* Mostrar pedidos de platos */}
-                      {pedidos.length > 0 &&
-                        pedidos.map((pedido, index) => (
-                          <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
-                            {pedido.platos && pedido.platos.length > 0 && ( // Verificar que platos existe
-                              <div>
-                                <strong>Platos:</strong>
-                                {pedido.platos.map((plato, idx) => (
-                                  <div key={idx} style={{ marginLeft: '10px' }}>
-                                    <div>
-                                      {plato.nombre} x{plato.cantidad}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </Box>
-                        ))}
+                      {pedidos.length > 0 && pedidos.some(pedido => pedido.platos?.length > 0) && pedidos.map((pedido, index) => (
+                        <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
+                          <strong>Platos:</strong>
+                          {pedido.platos.map((plato, idx) => (
+                            <div key={idx} style={{ marginLeft: '10px' }}>
+                              <span>{plato.nombre}</span> x{plato.cantidad}
+                            </div>
+                          ))}
+                        </Box>
+                      ))}
 
                       {/* Mostrar pedidos de bebidas */}
-                      {pedidosBebidas.length > 0 &&
-                        pedidosBebidas.map((pedido, index) => (
-                          <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
-                            {pedido.bebidas.length > 0 && (
-                              <div>
-                                <strong>
-                                  <span translate="no">Bebidas:</span>
-                                </strong>
-                                {pedido.bebidas.map((bebida, idx) => (
-                                  <div key={idx} style={{ marginLeft: '10px' }}>
-                                    <div>
-                                      <span translate="no">{bebida.nombre} </span>x{bebida.cantidad}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </Box>
-                        ))}
+                      {pedidosBebidas.length > 0 && pedidosBebidas.some(pedido => pedido.bebidas?.length > 0) && pedidosBebidas.map((pedido, index) => (
+                        <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
+                          <strong>Bebidas:</strong>
+                          {pedido.bebidas.map((bebida, idx) => (
+                            <div key={idx} style={{ marginLeft: '10px' }}>
+                              <span>{bebida.nombre}</span> x{bebida.cantidad}
+                            </div>
+                          ))}
+                        </Box>
+                      ))}
                     </>
                   ) : (
                     <div>No hay pedidos.</div>
                   )}
+
                 </div>
               </Box>
             </Drawer>
+
 
           </>
         ) : (
@@ -290,20 +268,36 @@ const Navbar = ({
 
             {/* Aquí mostramos los pedidos en un modal si es pantalla grande */}
             <Dialog open={isOrdersModalOpen} onClose={closeOrdersModal}>
-              <DialogTitle>Mis Pedidos</DialogTitle>
               <DialogContent>
-                {pedidos.length > 0 ? (
-                  pedidos.map((pedido, index) => (
-                    <div key={index}>
-                      <strong>Pedido {pedido.nombre}</strong>
-                      <div><strong>Nombre:</strong> {pedido.nombre}</div>
-                      <p>Estado: {pedido.estado}</p>
-                      <p>Total: {pedido.total}</p>
-                    </div>
-                  ))
-                ) : (
-                  <div>No hay pedidos.</div>
-                )}
+              {(pedidos.length > 0 || pedidosBebidas.length > 0) ? (
+                    <>
+                      {/* Mostrar pedidos de platos */}
+                      {pedidos.length > 0 && pedidos.some(pedido => pedido.platos?.length > 0) && pedidos.map((pedido, index) => (
+                        <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
+                          <strong>Platos:</strong>
+                          {pedido.platos.map((plato, idx) => (
+                            <div key={idx} style={{ marginLeft: '10px' }}>
+                              <span>{plato.nombre}</span> x{plato.cantidad}
+                            </div>
+                          ))}
+                        </Box>
+                      ))}
+
+                      {/* Mostrar pedidos de bebidas */}
+                      {pedidosBebidas.length > 0 && pedidosBebidas.some(pedido => pedido.bebidas?.length > 0) && pedidosBebidas.map((pedido, index) => (
+                        <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
+                          <strong>Bebidas:</strong>
+                          {pedido.bebidas.map((bebida, idx) => (
+                            <div key={idx} style={{ marginLeft: '10px' }}>
+                              <span>{bebida.nombre}</span> x{bebida.cantidad}
+                            </div>
+                          ))}
+                        </Box>
+                      ))}
+                    </>
+                  ) : (
+                    <div>No hay pedidos.</div>
+                  )}
               </DialogContent>
             </Dialog>
           </Box>

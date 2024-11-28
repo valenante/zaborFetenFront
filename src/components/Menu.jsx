@@ -4,7 +4,7 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import PlatoCard from './PlatoCard';
 import Cart from './Cart';
-import { Dialog, DialogTitle, DialogContent, Snackbar } from '@mui/material';
+import { Dialog, DialogContent } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 
 const MenuPage = () => {
@@ -14,32 +14,31 @@ const MenuPage = () => {
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  
+
   // Obtener el número de mesa de la URL o de localStorage si ya está guardado
   const mesaFromUrl = searchParams.get('mesa');
   const mesa = mesaFromUrl || localStorage.getItem('mesa'); // Si la URL no tiene la mesa, la obtenemos de localStorage
 
   if (mesa) {
     // Enviar solicitud para cambiar el estado de la mesa a "abierta"
-    fetch(`http:///192.168.1.132:3000/api/mesas/${mesa}`, {
+    fetch(`http://192.168.1.132:3000/api/mesas/${mesa}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        estado: 'abierta', 
+        estado: 'abierta',
       }),
     })
-    .then(response => response.json())
-    .catch(error => {
-      console.error('Error al actualizar el estado de la mesa:', error);
-      // Manejar el error si la solicitud falla
-    });
+      .then(response => response.json())
+      .catch(error => {
+        console.error('Error al actualizar el estado de la mesa:', error);
+        // Manejar el error si la solicitud falla
+      });
   }
-  
+
 
   // Guardar el número de mesa en localStorage cuando esté disponible
   useEffect(() => {
@@ -83,6 +82,7 @@ const MenuPage = () => {
   const addToCart = (plato) => {
     setCart(prevCart => {
       const updatedCart = [...prevCart, plato];
+      console.log(updatedCart[0].tipo);
       return updatedCart;
     });
   };
@@ -90,36 +90,37 @@ const MenuPage = () => {
   const removeFromCart = (platoId) => {
     setCart(prevCart => {
       const updatedCart = prevCart.filter(plato => plato._id !== platoId);
-      
+
       // Actualiza el localStorage después de modificar el carrito
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-      
+
       return updatedCart;
     });
   };
-  
+
 
   const sendOrder = async () => {
+
     // Separar platos y bebidas
-    const platos = cart.filter(item => item.tipo === 'plato');
+    const platos = cart.filter((item) => item.tipo === 'plato' || item.tipo === 'tapa' || item.tipo === 'racion');
     const bebidas = cart.filter(item => item.tipo === 'bebida');
-  
+
     // Preparar datos para los pedidos
     const platosParaEnviar = platos.map(plato => ({
       platoId: plato._id,
       nombre: plato.nombre,
       cantidad: plato.cantidad || 1,
       ingredientes: plato.ingredientes,
+      ingredientesEliminados: plato.ingredientesEliminados,
       descripcion: plato.descripcion,
       size: plato.size,
       opcionesPersonalizables: plato.opcionesPersonalizables,
       puntosDeCoccion: plato.puntosDeCoccion,
       especificaciones: plato.especificacion,
       precios: plato.precio ? [plato.precio] : [],
+      tipo: plato.tipo,
     }));
-  
-    console.log(platosParaEnviar.opcionesPersonalizables);
-  
+
     const bebidasParaEnviar = bebidas.map(bebida => ({
       bebidaId: bebida._id,
       nombre: bebida.nombre,
@@ -131,16 +132,16 @@ const MenuPage = () => {
       precio: bebida.precio,
       categoria: bebida.categoria,
     }));
-  
+
     // Calcular totales
     const totalPlatos = platosParaEnviar.reduce((acc, plato) => acc + (plato.precios[0] || 0) * plato.cantidad, 0);
     const totalBebidas = bebidasParaEnviar.reduce((acc, bebida) => acc + bebida.precio * bebida.cantidad, 0);
-  
+
     if (!mesa) {
       console.error("El campo 'mesa' es obligatorio");
       return;
     }
-  
+
     try {
       // Crear pedido de platos
       if (platosParaEnviar.length > 0) {
@@ -149,12 +150,12 @@ const MenuPage = () => {
           platos: platosParaEnviar,
           total: totalPlatos.toFixed(2),
         });
-  
+
         if (responsePlatos.data && responsePlatos.data.message) {
           console.log('Pedido de platos creado:', responsePlatos.data.message);
         }
       }
-  
+
       // Crear pedido de bebidas
       if (bebidasParaEnviar.length > 0) {
         const responseBebidas = await axios.post("http://192.168.1.132:3000/api/pedidoBebidas", {
@@ -162,12 +163,12 @@ const MenuPage = () => {
           bebidas: bebidasParaEnviar,
           total: totalBebidas.toFixed(2),
         });
-  
+
         if (responseBebidas.data && responseBebidas.data.message) {
           console.log('Pedido de bebidas creado:', responseBebidas.data.message);
         }
       }
-  
+
       // Limpiar carrito y mostrar mensaje
       setSnackbarMessage('Pedido enviado con éxito.');
       setOpenSnackbar(true);
@@ -179,7 +180,7 @@ const MenuPage = () => {
       setOpenSnackbar(true);
     }
   };
-  
+
 
   const toggleCartVisibility = () => {
     setIsCartVisible(!isCartVisible);
@@ -197,11 +198,14 @@ const MenuPage = () => {
 
       <div>
         {platos
-          .filter(plato => !selectedCategory || plato.categoria === selectedCategory)
+          .filter(plato =>
+            (!selectedCategory || plato.categoria === selectedCategory) && plato.estado === 'habilitado'
+          )
           .map(plato => (
             <PlatoCard key={plato._id} plato={plato} onAddToCart={addToCart} />
           ))}
       </div>
+
 
       {/* Aquí se muestra el componente Cart con las funciones pasadas como props */}
       {isCartVisible && (

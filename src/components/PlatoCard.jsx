@@ -18,13 +18,36 @@ const PlatoCard = ({ plato, onAddToCart }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [selectedCroquetas, setSelectedCroquetas] = useState(null);
+  const [tipoPlato, setTipoPlatoState] = useState('tapa');
+  const [ingredientesEliminados, setIngredientesEliminados] = useState([]);
 
+
+  // Configurar el valor predeterminado según los precios del plato
   useEffect(() => {
-    if (!plato.precios.tapa && !plato.precios.racion) {
-      setPrecio(plato.precios.precio);
+    if (plato.precios.tapa !== null) {
+      setSelectedSize('tapa');
+      setTipoPlatoState('tapa');
+    } else if (plato.precios.racion !== null) {
+      setSelectedSize('racion');
+      setTipoPlatoState('racion');
+    } else if (plato.precios.precio !== null) {
       setSelectedSize('precio');
+      setTipoPlatoState('plato');
     }
-  }, [plato.precios]);
+  }, [plato, setTipoPlatoState]);
+
+  const handleSizeChange = (e) => {
+    const size = e.target.value;
+    setSelectedSize(size);
+
+    if (size === 'precio') {
+      setTipoPlatoState('plato');
+    } else if (size === 'tapa') {
+      setTipoPlatoState('tapa');
+    } else if (size === 'racion') {
+      setTipoPlatoState('racion');
+    }
+  };
 
   const handleAddClick = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -70,6 +93,7 @@ const PlatoCard = ({ plato, onAddToCart }) => {
   const handleBlur = () => {
     // Si el campo está vacío al perder el foco, lo ponemos en 1
     if (cantidad === "") {
+
       setCantidad(1);
     }
   };
@@ -88,6 +112,7 @@ const PlatoCard = ({ plato, onAddToCart }) => {
     const platoParaCarrito = {
       ...plato,
       ingredientes,
+      ingredientesEliminados,
       descripcion,
       size: selectedSize,
       precio: selectedPrice * cantidad, // Multiplicamos el precio por la cantidad
@@ -96,10 +121,10 @@ const PlatoCard = ({ plato, onAddToCart }) => {
       puntosDeCoccion: selectedPuntosDeCoccion,
       especificacion: selectedEspecificacion,
       croquetas: selectedCroquetas,
-      tipo: 'plato',
+      tipo: tipoPlato
     };
 
-    console.log(platoParaCarrito.opcionesPersonalizables);
+    console.log(platoParaCarrito.tipo);
 
     onAddToCart(platoParaCarrito);
     setIsModalOpen(false);
@@ -108,10 +133,13 @@ const PlatoCard = ({ plato, onAddToCart }) => {
   };
 
   const handleRemoveIngredient = (ingredientToRemove) => {
-    setIngredientes(ingredientes.filter((ingrediente) => ingrediente !== ingredientToRemove));
-  };
+    // Agregar el ingrediente eliminado al estado de ingredientesEliminados
+    setIngredientesEliminados((prev) => [...prev, ingredientToRemove]);
 
-  const hasTapaOrRacion = plato.precios.tapa || plato.precios.racion;
+    // Actualizar el estado de los ingredientes restantes
+    setIngredientes(ingredientes.filter((ingrediente) => ingrediente !== ingredientToRemove));
+};
+
 
   return (
     <div className="container my-4">
@@ -166,12 +194,14 @@ const PlatoCard = ({ plato, onAddToCart }) => {
             selectedSize={selectedSize}
             setSelectedSize={setSelectedSize}
             selectedOptions={selectedOptions}
+            handleSizeChange={handleSizeChange}
             handleOptionChange={handleOptionChange}
             selectedEspecificacion={selectedEspecificacion}
             handleEspecificacionChange={handleEspecificacionChange}
             selectedPuntosDeCoccion={selectedPuntosDeCoccion}
             handlePuntosDeCoccionChange={handlePuntosDeCoccionChange}
-          />
+            setTipoPlato={setTipoPlatoState} // Aquí pasamos el setter local
+            />
 
           {plato.nombre === 'Surtido de Croquetas' && (
             <SurtidoCroquetasForm onUpdateCroquetas={setSelectedCroquetas} plato={plato} />

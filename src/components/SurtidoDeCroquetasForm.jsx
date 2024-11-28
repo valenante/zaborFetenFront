@@ -134,18 +134,7 @@ const SurtidoDeCroquetasForm = ({ plato, onUpdateCroquetas }) => {
       <div>
         <p>Precio seleccionado: {precio} €</p>
       </div>
-
-      {/* Validación: asegurarse de que haya 6 croquetas seleccionadas en el surtido */}
-      <div>
-        {tipoPorcion !== 'surtido' || totalSelected === 6 ? (
-          <button onClick={() => onUpdateCroquetas({ tipoPorcion, sabor, precio })}>
-            Confirmar Selección
-          </button>
-        ) : (
-          <p>Debes seleccionar 6 croquetas en total.</p>
-        )}
       </div>
-    </div>
   );
 };
 
