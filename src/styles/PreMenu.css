@@ -1,0 +1,80 @@
+/* Estilos para el modal */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.modal-title {
+  color: #620375; /* Color clave */
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-label {
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.modal-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.modal-input:focus {
+  border-color: #620375; /* Color clave al hacer focus */
+  outline: none;
+}
+
+.modal-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.modal-button {
+  padding: 12px 20px;
+  background-color: #620375; /* Color clave */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-button:hover {
+  background-color: #520262; /* Un tono más oscuro del color clave */
+}
+
+.modal-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}

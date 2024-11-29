@@ -4,7 +4,6 @@ import Navbar from './Navbar';
 import BebidaCard from './BebidaCard';
 import Cart from './Cart';
 import { Dialog, DialogContent, Snackbar } from '@mui/material';
-import { useLocation } from 'react-router-dom';
 
 const BebidasMenu = () => {
   const [bebidas, setBebidas] = useState([]);
@@ -14,19 +13,25 @@ const BebidasMenu = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  const mesa = localStorage.getItem('mesaId'); // Si la URL no tiene la mesa, la obtenemos de localStorage
 
-  // Obtener el número de mesa de la URL o de localStorage si ya está guardado
-  const mesaFromUrl = searchParams.get('mesa');
-  const mesa = mesaFromUrl || localStorage.getItem('mesa'); // Si la URL no tiene la mesa, la obtenemos de localStorage
-
-  // Guardar el número de mesa en localStorage solo si no existe
+  //UseEffect para abrir la mesa con su id
   useEffect(() => {
-    if (mesa && !localStorage.getItem('mesa')) {
-      localStorage.setItem('mesa', mesa); // Guardamos la mesa en localStorage
+    if (mesa) {
+      // Actualizar el estado de la mesa a "abierta"
+      fetch(`http://192.168.1.132:3000/api/mesas/${mesa}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          estado: 'abierta',
+        }),
+      }).catch(error => {
+        console.error('Error al actualizar el estado de la mesa:', error);
+      });
     }
-  }, [mesa]);
+  }, []);
 
   // Cargar el carrito desde localStorage al montar el componente
   useEffect(() => {
@@ -82,6 +87,7 @@ const BebidasMenu = () => {
       puntosDeCoccion: plato.puntosDeCoccion,
       especificaciones: plato.especificacion,
       precios: plato.precio ? [plato.precio] : [],
+      tipoServicio: plato.tipoServicio,
     }));
 
     const bebidasParaEnviar = bebidas.map(bebida => ({

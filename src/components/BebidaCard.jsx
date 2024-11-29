@@ -89,7 +89,7 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
         </div>
         <div className="col-md-4 text-center">
           {bebida.img && (
-            <img src={bebida.img} alt={bebida.nombre} className="img-fluid rounded-img" />
+            <img src={`http://192.168.1.132:3000/${bebida.img}`} alt={bebida.nombre} className="img-fluid rounded-img" />
           )}
           <div className="plato-price mt-2">
             <div>{bebida.precio && `$${bebida.precio.toFixed(2)}`}</div>

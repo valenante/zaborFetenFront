@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Snackbar, FormControl } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Snackbar } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Plato.css';
 import SurtidoCroquetasForm from './SurtidoDeCroquetasForm';
 import PlatoOptions from './PlatoOptions';  // Extraemos opciones personalizables a un componente
+import { useLocation } from 'react-router-dom';
 
 const PlatoCard = ({ plato, onAddToCart }) => {
+  const searchParams = new URLSearchParams(useLocation().search);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ingredientes, setIngredientes] = useState(plato.ingredientes);
@@ -20,6 +22,10 @@ const PlatoCard = ({ plato, onAddToCart }) => {
   const [selectedCroquetas, setSelectedCroquetas] = useState(null);
   const [tipoPlato, setTipoPlatoState] = useState('tapa');
   const [ingredientesEliminados, setIngredientesEliminados] = useState([]);
+  const [selectedTipoServicio, setSelectedTipoServicio] = useState('compartir');
+  const alergias = searchParams.get('alergias');
+  const comensales = searchParams.get('comensales');
+  console.log(plato);
 
 
   // Configurar el valor predeterminado según los precios del plato
@@ -98,6 +104,10 @@ const PlatoCard = ({ plato, onAddToCart }) => {
     }
   };
 
+  const handleTipoServicioChange = (e) => {
+    setSelectedTipoServicio(e.target.value);
+  };
+
   const handleAddToCart = () => {
     let selectedPrice = 0;
 
@@ -121,7 +131,10 @@ const PlatoCard = ({ plato, onAddToCart }) => {
       puntosDeCoccion: selectedPuntosDeCoccion,
       especificacion: selectedEspecificacion,
       croquetas: selectedCroquetas,
-      tipo: tipoPlato
+      tipo: tipoPlato,
+      alergias,
+      comensales,
+      tipoServicio: selectedTipoServicio,
     };
 
     console.log(platoParaCarrito.tipo);
@@ -138,7 +151,7 @@ const PlatoCard = ({ plato, onAddToCart }) => {
 
     // Actualizar el estado de los ingredientes restantes
     setIngredientes(ingredientes.filter((ingrediente) => ingrediente !== ingredientToRemove));
-};
+  };
 
 
   return (
@@ -161,8 +174,8 @@ const PlatoCard = ({ plato, onAddToCart }) => {
           </Button>
         </div>
         <div className="col-12 col-md-4 text-center order-1 order-md-2"> {/* Imagen arriba en pantallas pequeñas */}
-          <img src={plato.imagen} alt={plato.nombre} className="img-fluid rounded-img" />
-          <div className="plato-price mt-2">
+        <img src={`http://192.168.1.132:3000/${plato.imagen}`} alt={plato.nombre} className="img-fluid rounded-img" />
+        <div className="plato-price mt-2">
             {plato.precios.tapa && <div translate="no">Tapa - ${plato.precios.tapa}</div>}
             {plato.precios.racion && <div translate="no">Ración - ${plato.precios.racion}</div>}
             {!plato.precios.tapa && !plato.precios.racion && <div>{plato.precios.precio}€</div>}
@@ -201,25 +214,43 @@ const PlatoCard = ({ plato, onAddToCart }) => {
             selectedPuntosDeCoccion={selectedPuntosDeCoccion}
             handlePuntosDeCoccionChange={handlePuntosDeCoccionChange}
             setTipoPlato={setTipoPlatoState} // Aquí pasamos el setter local
-            />
+          />
 
           {plato.nombre === 'Surtido de Croquetas' && (
             <SurtidoCroquetasForm onUpdateCroquetas={setSelectedCroquetas} plato={plato} />
           )}
 
-          <div className="mt-3">
-            <label htmlFor="cantidad">Cantidad:</label>
-            <input
-              id="cantidad"
-              type="number"
-              value={cantidad}
-              onChange={handleCantidadChange}
-              onBlur={handleBlur} // Detecta cuando el usuario sale del input
-              min="1"
-              max="10"
-              className="form-control"
-              style={{ width: '100px', marginTop: '10px' }}
-            />
+          <div className="container">
+            <div className="row">
+              <div className="col-6">
+                <label htmlFor="cantidad">Cantidad:</label>
+                <input
+                  id="cantidad"
+                  type="number"
+                  value={cantidad}
+                  onChange={handleCantidadChange}
+                  onBlur={handleBlur} // Detecta cuando el usuario sale del input
+                  min="1"
+                  max="10"
+                  className="form-control"
+                  style={{ width: '100px', marginTop: '10px' }}
+                />
+              </div>
+              <div className="col-6">
+                <label htmlFor="servingStyle">Para:</label>
+                <select
+                  id="servingStyle"
+                  value={selectedTipoServicio}
+                  onChange={handleTipoServicioChange}
+                  className="form-control"
+                  style={{ marginTop: '10px' }}
+                >
+                  <option value="compartir">Compartir</option>
+                  <option value="individual">Individual</option>
+                </select>
+              </div>
+            </div>
+
           </div>
 
 

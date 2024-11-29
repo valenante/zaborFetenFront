@@ -45,6 +45,7 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
   const handleSendOrder = async () => {
     try {
       await sendOrder(cart);
+      console.log(cart);
       setSnackbarMessage('Pedido enviado con éxito');
       setOpenSnackbar(true);
     } catch (error) {

@@ -20,17 +20,17 @@ const Navbar = ({
   const [isOrdersModalOpen, setOrdersModalOpen] = useState(false);
   const [pedidos, setPedidos] = useState([]);
   const [pedidosBebidas, setPedidosBebidas] = useState([]);
-  const numeroMesa = localStorage.getItem('mesa');
+  const mesaId = localStorage.getItem('mesaId');  // Obtener el ID de la mesa desde localStorage
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
   const buttonText = location.pathname.includes('bebidas') ? 'Comida' : 'Bebidas';
   const linkTo = location.pathname.includes('bebidas') ? '/menu' : '/bebidas';
   const isSmallScreen = useMediaQuery('(max-width:768px)'); // Correct media query
 
-  // Función para traer los pedidos desde la base de datos
+  // Función para traer los pedidos de comida desde la base de datos
   const fetchPedidos = async () => {
     try {
-      const response = await fetch(`http://192.168.1.132:3000/api/pedidos/mesa/${numeroMesa}`);
+      const response = await fetch(`http://192.168.1.132:3000/api/pedidos/mesa/${mesaId}`);
       const data = await response.json();
       setPedidos(data);
     } catch (error) {
@@ -38,13 +38,14 @@ const Navbar = ({
     }
   };
 
+  // Función para traer los pedidos de bebidas desde la base de datos
   const fetchPedidosBebidas = async () => {
     try {
-      const response = await fetch(`http://192.168.1.132:3000/api/pedidoBebidas/mesa/${numeroMesa}`);
+      const response = await fetch(`http://192.168.1.132:3000/api/pedidoBebidas/mesa/${mesaId}`);
       const data = await response.json();
       setPedidosBebidas(data);
     } catch (error) {
-      console.error("Error al obtener los pedidos:", error);
+      console.error("Error al obtener los pedidos de bebidas:", error);
     }
   };
 
@@ -57,7 +58,7 @@ const Navbar = ({
 
     // Limpiar el intervalo cuando el componente se desmonte
     return () => clearInterval(intervalId);
-  }, [numeroMesa]); // Solo se ejecuta cuando cambia numeroMesa
+  }, [mesaId]); // Solo se ejecuta cuando cambia numeroMesa
 
   const onOrdersClick = () => {
     setOrdersModalOpen(true); // Abre el modal de pedidos
@@ -74,7 +75,7 @@ const Navbar = ({
   useEffect(() => {
     fetchPedidos();
     fetchPedidosBebidas();
-  }, [numeroMesa]);
+  }, [mesaId]);
 
   return (
     <div className="bg text-black p-3">

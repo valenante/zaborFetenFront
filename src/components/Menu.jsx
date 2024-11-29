@@ -1,4 +1,3 @@
-// src/components/MenuPage.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
@@ -14,38 +13,40 @@ const MenuPage = () => {
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [mesaId, setMesaId] = useState(null); // Nuevo estado para almacenar el id de la mesa
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-
-  // Obtener el número de mesa de la URL o de localStorage si ya está guardado
+  console.log(mesaId)
+  // Obtener el número de mesa de la URL
   const mesaFromUrl = searchParams.get('mesa');
-  const mesa = mesaFromUrl || localStorage.getItem('mesa'); // Si la URL no tiene la mesa, la obtenemos de localStorage
 
-  if (mesa) {
-    // Enviar solicitud para cambiar el estado de la mesa a "abierta"
-    fetch(`http://192.168.1.132:3000/api/mesas/${mesa}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        estado: 'abierta',
-      }),
-    })
-      .then(response => response.json())
-      .catch(error => {
-        console.error('Error al actualizar el estado de la mesa:', error);
-        // Manejar el error si la solicitud falla
-      });
-  }
-
-
-  // Guardar el número de mesa en localStorage cuando esté disponible
   useEffect(() => {
     if (mesaFromUrl) {
-      localStorage.setItem('mesa', mesaFromUrl); // Guardamos la mesa en localStorage si la obtenemos de la URL
+      // Realizar la consulta para obtener la mesa por el número
+      axios.get(`http://192.168.1.132:3000/api/mesas/numero/${mesaFromUrl}`)
+        .then(response => {
+          const mesa = response.data;
+          if (mesa) {
+            setMesaId(mesa.id); // Guardar el id de la mesa en el estado);
+            // Actualizar el estado de la mesa a "abierta"
+            fetch(`http://192.168.1.132:3000/api/mesas/${mesa.id}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                estado: 'abierta',
+              }),
+            }).catch(error => {
+              console.error('Error al actualizar el estado de la mesa:', error);
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error al obtener la mesa por número:', error);
+        });
     }
-  }, [mesaFromUrl]);
+  }, []);
 
   // Cargar los platos de la API
   useEffect(() => {
@@ -58,7 +59,14 @@ const MenuPage = () => {
       });
   }, []);
 
-  // Cargar el carrito desde localStorage si está disponible
+  //Guardar el id de la mesa en el localStorage
+  useEffect(() => {
+    if (mesaId) {
+      localStorage.setItem('mesaId', mesaId);
+    }
+  }, [mesaId]);
+
+  // Guardar el carrito en localStorage
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem('cart'));
     if (savedCart) {
@@ -66,10 +74,9 @@ const MenuPage = () => {
     }
   }, []);
 
-  // Guardar el carrito en localStorage cada vez que se actualice
   useEffect(() => {
     if (cart.length > 0) {
-      localStorage.setItem('cart', JSON.stringify(cart)); // Guardamos el carrito en localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
     }
   }, [cart]);
 
@@ -82,7 +89,6 @@ const MenuPage = () => {
   const addToCart = (plato) => {
     setCart(prevCart => {
       const updatedCart = [...prevCart, plato];
-      console.log(updatedCart[0].tipo);
       return updatedCart;
     });
   };
@@ -90,22 +96,20 @@ const MenuPage = () => {
   const removeFromCart = (platoId) => {
     setCart(prevCart => {
       const updatedCart = prevCart.filter(plato => plato._id !== platoId);
-
-      // Actualiza el localStorage después de modificar el carrito
       localStorage.setItem('cart', JSON.stringify(updatedCart));
-
       return updatedCart;
     });
   };
 
-
   const sendOrder = async () => {
+    if (!mesaId) {
+      console.error("El ID de la mesa es obligatorio");
+      return;
+    }
 
-    // Separar platos y bebidas
-    const platos = cart.filter((item) => item.tipo === 'plato' || item.tipo === 'tapa' || item.tipo === 'racion');
+    const platos = cart.filter(item => item.tipo === 'plato' || item.tipo === 'tapa' || item.tipo === 'racion');
     const bebidas = cart.filter(item => item.tipo === 'bebida');
 
-    // Preparar datos para los pedidos
     const platosParaEnviar = platos.map(plato => ({
       platoId: plato._id,
       nombre: plato.nombre,
@@ -119,6 +123,9 @@ const MenuPage = () => {
       especificaciones: plato.especificacion,
       precios: plato.precio ? [plato.precio] : [],
       tipo: plato.tipo,
+      alergias: plato.alergias,
+      comensales: plato.comensales,
+      tipoServicio: plato.tipoServicio,
     }));
 
     const bebidasParaEnviar = bebidas.map(bebida => ({
@@ -133,22 +140,17 @@ const MenuPage = () => {
       categoria: bebida.categoria,
     }));
 
-    // Calcular totales
     const totalPlatos = platosParaEnviar.reduce((acc, plato) => acc + (plato.precios[0] || 0) * plato.cantidad, 0);
     const totalBebidas = bebidasParaEnviar.reduce((acc, bebida) => acc + bebida.precio * bebida.cantidad, 0);
 
-    if (!mesa) {
-      console.error("El campo 'mesa' es obligatorio");
-      return;
-    }
-
     try {
-      // Crear pedido de platos
       if (platosParaEnviar.length > 0) {
         const responsePlatos = await axios.post("http://192.168.1.132:3000/api/pedidos", {
-          mesa,
+          mesa: mesaId,
           platos: platosParaEnviar,
           total: totalPlatos.toFixed(2),
+          comensales: platosParaEnviar[0].comensales,
+          alergias: platosParaEnviar[0].alergias,
         });
 
         if (responsePlatos.data && responsePlatos.data.message) {
@@ -156,10 +158,9 @@ const MenuPage = () => {
         }
       }
 
-      // Crear pedido de bebidas
       if (bebidasParaEnviar.length > 0) {
         const responseBebidas = await axios.post("http://192.168.1.132:3000/api/pedidoBebidas", {
-          mesa,
+          mesa: mesaId,
           bebidas: bebidasParaEnviar,
           total: totalBebidas.toFixed(2),
         });
@@ -169,7 +170,6 @@ const MenuPage = () => {
         }
       }
 
-      // Limpiar carrito y mostrar mensaje
       setSnackbarMessage('Pedido enviado con éxito.');
       setOpenSnackbar(true);
       setCart([]);
@@ -180,7 +180,6 @@ const MenuPage = () => {
       setOpenSnackbar(true);
     }
   };
-
 
   const toggleCartVisibility = () => {
     setIsCartVisible(!isCartVisible);
