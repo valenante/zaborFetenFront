@@ -5,14 +5,10 @@ import { FaFacebook, FaInstagram, FaGoogle, FaTripadvisor } from 'react-icons/fa
 import '../styles/Home.css';
 import logo from '../assets/Manu y Mirian Caricatura.webp';
 import bodega from '../assets/bodega.webp';
-import Navbar from './Navbar';
 
 const Home = () => {
     return (
         <div>
-
-            <Navbar showCategorySelect={false} showCart={false} />
-
             {/* Welcome Section */}
             <section className="text-center background-section">
                 <h1>Bienvenido a Zabor Fetén</h1>
@@ -26,10 +22,6 @@ const Home = () => {
                     <p>
                         Zabor Fetén nace como fruto de un sueño de una joven pareja, crear un gastrobar donde no solo se va a comer comida española de calidad,
                         sino que se va por una experiencia familiar, alegre y sobre todo de buen rollo.
-                    </p>
-                    <p>
-                        Un proyecto que embellece el centro de Torremolinos, ofreciendo una propuesta fresca, joven e innovadora, compaginado con un equipo de trabajo
-                        que siente ser parte de una familia, y que ve como objetivo número uno hacer vivir una experiencia inolvidable a sus clientes.
                     </p>
                 </div>
             </section>

@@ -6,27 +6,24 @@ import SurtidoCroquetasForm from './SurtidoDeCroquetasForm';
 import PlatoOptions from './PlatoOptions';  // Extraemos opciones personalizables a un componente
 import { useLocation } from 'react-router-dom';
 
-const PlatoCard = ({ plato, onAddToCart }) => {
+const PlatoCard = ({ plato, onAddToCart, setIngredientes, ingredientes }) => {
   const searchParams = new URLSearchParams(useLocation().search);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [ingredientes, setIngredientes] = useState(plato.ingredientes);
   const [descripcion, setDescripcion] = useState(plato.descripcion);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedPuntosDeCoccion, setSelectedPuntosDeCoccion] = useState('');
   const [selectedEspecificacion, setSelectedEspecificacion] = useState('');
-  const [precio, setPrecio] = useState(0);
   const [cantidad, setCantidad] = useState(1); // Variable para almacenar la cantidad seleccionada
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [selectedCroquetas, setSelectedCroquetas] = useState(null);
+  const [selectedCroquetas, setSelectedCroquetas] = useState([]);
   const [tipoPlato, setTipoPlatoState] = useState('tapa');
   const [ingredientesEliminados, setIngredientesEliminados] = useState([]);
   const [selectedTipoServicio, setSelectedTipoServicio] = useState('compartir');
   const alergias = searchParams.get('alergias');
+  const [isSurtidoComplete, setIsSurtidoComplete] = useState(false); // Para manejar si el surtido está completo
   const comensales = searchParams.get('comensales');
-  console.log(plato);
-
 
   // Configurar el valor predeterminado según los precios del plato
   useEffect(() => {
@@ -136,9 +133,6 @@ const PlatoCard = ({ plato, onAddToCart }) => {
       comensales,
       tipoServicio: selectedTipoServicio,
     };
-
-    console.log(platoParaCarrito.tipo);
-
     onAddToCart(platoParaCarrito);
     setIsModalOpen(false);
     setSnackbarMessage("Producto agregado correctamente");
@@ -146,13 +140,15 @@ const PlatoCard = ({ plato, onAddToCart }) => {
   };
 
   const handleRemoveIngredient = (ingredientToRemove) => {
-    // Agregar el ingrediente eliminado al estado de ingredientesEliminados
+    console.log("Antes de eliminar:", ingredientes);
     setIngredientesEliminados((prev) => [...prev, ingredientToRemove]);
-
-    // Actualizar el estado de los ingredientes restantes
-    setIngredientes(ingredientes.filter((ingrediente) => ingrediente !== ingredientToRemove));
+    setIngredientes((prevIngredientes) =>
+      prevIngredientes.filter((ingrediente) => ingrediente !== ingredientToRemove)
+    );
+    console.log("Después de eliminar:", ingredientes);
   };
 
+  const surtidoRequerido = plato.saboresDisponibles && plato.saboresDisponibles.length > 0;
 
   return (
     <div className="container my-4">
@@ -174,8 +170,8 @@ const PlatoCard = ({ plato, onAddToCart }) => {
           </Button>
         </div>
         <div className="col-12 col-md-4 text-center order-1 order-md-2"> {/* Imagen arriba en pantallas pequeñas */}
-        <img src={`http://192.168.1.132:3000/${plato.imagen}`} alt={plato.nombre} className="img-fluid rounded-img" />
-        <div className="plato-price mt-2">
+          <img src={`http://192.168.1.132:3000/${plato.imagen}`} alt={plato.nombre} className="img-fluid rounded-img" />
+          <div className="plato-price mt-2">
             {plato.precios.tapa && <div translate="no">Tapa - ${plato.precios.tapa}</div>}
             {plato.precios.racion && <div translate="no">Ración - ${plato.precios.racion}</div>}
             {!plato.precios.tapa && !plato.precios.racion && <div>{plato.precios.precio}€</div>}
@@ -190,15 +186,18 @@ const PlatoCard = ({ plato, onAddToCart }) => {
           <div>{plato.descripcion}</div>
           <h4 className="plato-ingredients-title">Ingredientes:</h4>
           <ul className="list-unstyled">
-            {ingredientes.map((ingrediente, index) => (
-              <li key={index} className="d-flex justify-content-between align-items-center mb-2">
-                {ingrediente}
-                <Button variant="outline-danger" onClick={() => handleRemoveIngredient(ingrediente)}>
-                  Quitar
-                </Button>
-              </li>
-            ))}
+            {plato.ingredientes
+              .filter((ingrediente) => !ingredientesEliminados.includes(ingrediente)) // Filtra los ingredientes eliminados
+              .map((ingrediente, index) => (
+                <li key={index} className="d-flex justify-content-between align-items-center mb-2">
+                  {ingrediente}
+                  <Button variant="outline-danger" onClick={() => handleRemoveIngredient(ingrediente)}>
+                    Quitar
+                  </Button>
+                </li>
+              ))}
           </ul>
+
 
           <PlatoOptions
             plato={plato}
@@ -214,11 +213,15 @@ const PlatoCard = ({ plato, onAddToCart }) => {
             selectedPuntosDeCoccion={selectedPuntosDeCoccion}
             handlePuntosDeCoccionChange={handlePuntosDeCoccionChange}
             setTipoPlato={setTipoPlatoState} // Aquí pasamos el setter local
+            setIngredientes={setIngredientes}
           />
 
           {plato.nombre === 'Surtido de Croquetas' && (
-            <SurtidoCroquetasForm onUpdateCroquetas={setSelectedCroquetas} plato={plato} />
-          )}
+            <SurtidoCroquetasForm
+                plato={plato}
+                onUpdateCroquetas={(croquetas) => setSelectedCroquetas(croquetas)}
+                onSurtidoComplete={setIsSurtidoComplete}
+              />          )}
 
           <div className="container">
             <div className="row">
@@ -257,7 +260,7 @@ const PlatoCard = ({ plato, onAddToCart }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal}>Cancelar</Button>
-          <Button onClick={handleAddToCart} color="primary">
+          <Button onClick={handleAddToCart} color="primary"  disabled={surtidoRequerido && !isSurtidoComplete}>
             Agregar
           </Button>
         </DialogActions>

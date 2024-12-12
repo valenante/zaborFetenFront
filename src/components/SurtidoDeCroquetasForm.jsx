@@ -1,140 +1,84 @@
 import React, { useState, useEffect } from 'react';
 
-const SurtidoDeCroquetasForm = ({ plato, onUpdateCroquetas }) => {
-  const [tipoPorcion, settipoPorcion] = useState('');  // Tapa, Ración o Surtido
-  const [sabor, setsabor] = useState(''); // Sabor seleccionado cuando es tapa o ración
-  const [totalSelected, setTotalSelected] = useState(0); // Número total de croquetas seleccionadas en el surtido
-  const [precio, setprecio] = useState(plato.precios.precio); // Precio base
+const SurtidoDeCroquetasForm = ({ plato, onUpdateCroquetas, onSurtidoComplete }) => {
+  const [selectedSurtido, setSelectedSurtido] = useState({}); // Sabores seleccionados y sus cantidades
+  const [totalSelected, setTotalSelected] = useState(0); // Total de croquetas seleccionadas
+
+  const maxCroquetas = 6; // Número fijo de croquetas en el surtido
+  const precio = plato.precios.precio; // Precio fijo del surtido
 
   useEffect(() => {
-    // Actualizar las croquetas según el tipo de porción y selección de sabores
-    if (tipoPorcion === 'surtido' && totalSelected === 6) {
-      onUpdateCroquetas({ tipoPorcion, precio, sabor });
-    } else if (tipoPorcion !== 'surtido') {
-      onUpdateCroquetas({ tipoPorcion, precio, sabor });
+    // Actualizamos las croquetas seleccionadas cuando el surtido cambia
+    if (totalSelected === maxCroquetas) {
+      // Pasamos un array con los sabores seleccionados y sus cantidades
+      const croquetasSeleccionadas = Object.entries(selectedSurtido).flatMap(([sabor, cantidad]) =>
+        Array(cantidad).fill(sabor)
+      );
+      onUpdateCroquetas(croquetasSeleccionadas); // Envía el array de sabores seleccionados al componente padre
     }
-  }, [
-    tipoPorcion,
-    sabor,
-    precio,
-    totalSelected,
-    onUpdateCroquetas
-  ]);
 
-  // Maneja el cambio en la selección de sabores para el surtido
+    // Enviamos la validación si el surtido está completo
+    onSurtidoComplete(totalSelected === maxCroquetas);
+  }, [selectedSurtido, totalSelected, onUpdateCroquetas, onSurtidoComplete]);
+
   const handleSurtidoChange = (sabor, action) => {
-    setsabor((prevSurtido) => {
-      const updatedCount = action === 'increment' ? (prevSurtido[sabor] || 0) + 1 : (prevSurtido[sabor] || 0) - 1;
-      const newSurtido = { ...prevSurtido, [sabor]: Math.max(updatedCount, 0) };
-      setTotalSelected(Object.values(newSurtido).reduce((total, count) => total + count, 0));
-      return newSurtido;
+    setSelectedSurtido((prevSurtido) => {
+      const currentCount = prevSurtido[sabor] || 0;
+      let updatedCount = action === 'increment' ? currentCount + 1 : currentCount - 1;
+
+      if (updatedCount < 0) {
+        updatedCount = 0; // No permitir valores negativos
+      }
+
+      // Solo permitir incrementar si no se supera el máximo de croquetas
+      if (updatedCount <= maxCroquetas && (totalSelected + (action === 'increment' ? 1 : -1)) <= maxCroquetas) {
+        const newSurtido = { ...prevSurtido, [sabor]: updatedCount };
+
+        if (updatedCount === 0) {
+          delete newSurtido[sabor]; // Eliminar sabor si la cantidad es 0
+        }
+
+        setTotalSelected(Object.values(newSurtido).reduce((total, count) => total + count, 0));
+        return newSurtido;
+      }
+
+      return prevSurtido;
     });
-  };
-
-  // Maneja el cambio en la selección de tapa o ración
-  const handleOptionChange = (e) => {
-    settipoPorcion(e.target.value);
-    // Actualizar el precio según la opción seleccionada
-    if (e.target.value === 'tapa') {
-      setprecio(plato.precios.tapa);
-      setsabor(''); // Reiniciar sabor para tapa o ración
-    } else if (e.target.value === 'racion') {
-      setprecio(plato.precios.racion);
-      setsabor(''); // Reiniciar sabor para tapa o ración
-    } else if (e.target.value === 'surtido') {
-      setprecio(plato.precios.surtido);
-      setsabor({}); // Reiniciar surtido para surtido
-      setTotalSelected(0);
-    }
-  };
-
-  // Maneja el cambio de sabor en tapa o ración
-  const handleSingleSaborChange = (e) => {
-    setsabor(e.target.value);
   };
 
   return (
     <div>
-      <h4>Selecciona la opción del Surtido de Croquetas</h4>
+      <h4>Selecciona los sabores para las 6 croquetas</h4>
 
-      {/* Opciones: Tapa, Ración o Surtido */}
-      <div>
-        <label>
-          <input
-            type="radio"
-            value="tapa"
-            checked={tipoPorcion === 'tapa'}
-            onChange={handleOptionChange}
-          />
-          Tapa
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="racion"
-            checked={tipoPorcion === 'racion'}
-            onChange={handleOptionChange}
-          />
-          Ración
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="surtido"
-            checked={tipoPorcion === 'surtido'}
-            onChange={handleOptionChange}
-          />
-          Surtido
-        </label>
-      </div>
+      {plato.saboresDisponibles.map((sabor, index) => (
+        <div key={index} className="d-flex align-items-center mb-3">
+          <label className="me-3">{sabor}:</label>
+          
+          <button
+            onClick={() => handleSurtidoChange(sabor, 'decrement')}
+            disabled={!selectedSurtido[sabor] || selectedSurtido[sabor] === 0}
+            className="btn btn-outline-danger btn-sm me-2"
+          >
+            -
+          </button>
 
-      {/* Selección de sabor para Tapa o Ración */}
-      {tipoPorcion === 'tapa' || tipoPorcion === 'racion' ? (
-        <div>
-          <h5>Selecciona un sabor</h5>
-          <select value={sabor} onChange={handleSingleSaborChange}>
-            <option value="">Selecciona un sabor</option>
-            {plato.ingredientes.map((saborItem, index) => (
-              <option key={index} value={saborItem}>
-                {saborItem}
-              </option>
-            ))}
-          </select>
+          <span className="me-2">{selectedSurtido[sabor] || 0}</span>
+
+          <button
+            onClick={() => handleSurtidoChange(sabor, 'increment')}
+            disabled={totalSelected >= maxCroquetas}
+            className="btn btn-outline-success btn-sm"
+          >
+            +
+          </button>
         </div>
-      ) : null}
+      ))}
 
-      {/* Selección de sabores para Surtido */}
-      {tipoPorcion === 'surtido' && (
-        <div>
-          <h5>Selecciona los sabores para las 6 croquetas</h5>
-          {plato.ingredientes.map((saborItem, index) => (
-            <div key={index}>
-              <label>{saborItem}:</label>
-              <div>
-                <button
-                  onClick={() => handleSurtidoChange(saborItem, 'decrement')}
-                  disabled={sabor[saborItem] === 0}
-                >
-                  -
-                </button>
-                <span>{sabor[saborItem] || 0}</span>
-                <button
-                  onClick={() => handleSurtidoChange(saborItem, 'increment')}
-                  disabled={totalSelected === 6}
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Mostrar el precio según la opción seleccionada */}
-      <div>
-        <p>Precio seleccionado: {precio} €</p>
+      <div className="mt-4">
+        <p>Total seleccionadas: {totalSelected} / {maxCroquetas}</p>
+        <p>Precio total: {precio} €</p>
       </div>
-      </div>
+    </div>
   );
 };
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Select, MenuItem, Badge, IconButton, Box, useMediaQuery, Drawer, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Select, MenuItem, Badge, IconButton, Box, useMediaQuery, Drawer, Dialog, DialogContent } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logoZf.webp';
 import '../styles/Navbar.css';
 import Button from '@mui/material/Button';
-import MenuIcon from '@mui/icons-material/Menu';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({
   selectedCategory,
@@ -22,9 +22,18 @@ const Navbar = ({
   const [pedidosBebidas, setPedidosBebidas] = useState([]);
   const mesaId = localStorage.getItem('mesaId');  // Obtener el ID de la mesa desde localStorage
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const location = useLocation();
+  const location = useLocation();  // Para acceder a la URL actual
+  const navigate = useNavigate();  // Para navegar a otra ruta
   const buttonText = location.pathname.includes('bebidas') ? 'Comida' : 'Bebidas';
+
   const linkTo = location.pathname.includes('bebidas') ? '/menu' : '/bebidas';
+
+
+  const handleNavigation = () => {
+    // Navegar a la nueva ruta manteniendo los parámetros de la URL
+    navigate(`${linkTo}${location.search}`);
+  };
+
   const isSmallScreen = useMediaQuery('(max-width:768px)'); // Correct media query
 
   // Función para traer los pedidos de comida desde la base de datos
@@ -72,6 +81,36 @@ const Navbar = ({
     setDrawerOpen(open);
   };
 
+  
+  const onPayClick = () => {
+    if (arePedidosComplete()) {
+      navigate('/valoracion');
+    } else {
+      alert('No todos los pedidos están completos. Por favor, revisa tu orden.');
+    }
+  };
+
+  const arePedidosComplete = () => {
+    // Verificar si los pedidos son arrays válidos antes de iterar
+    const pedidosArray = Array.isArray(pedidos) ? pedidos : [];
+    const pedidosBebidasArray = Array.isArray(pedidosBebidas) ? pedidosBebidas : [];
+  
+    // Verificar si hay pedidos en comida o bebidas antes de continuar
+    if (pedidosArray.length === 0 && pedidosBebidasArray.length === 0) {
+      return false;  // No hay pedidos, entonces no están completos
+    }
+  
+    // Verificar si todos los pedidos (comida y bebidas) están completos
+    const allCompletos = [...pedidosArray, ...pedidosBebidasArray].every(pedido => {
+      // Verificar que el estado del pedido sea 'completado'
+      return pedido.estado === 'completado';
+    });
+  
+    return allCompletos;
+  };
+  
+  
+  
   useEffect(() => {
     fetchPedidos();
     fetchPedidosBebidas();
@@ -137,8 +176,7 @@ const Navbar = ({
               <Button
                 variant="contained"
                 color="primary"
-                component={Link}
-                to={linkTo} // Cambia la ruta dependiendo de la página actual
+                onClick={handleNavigation}  // Usar el handleNavigation para hacer la navegación
                 sx={{
                   margin: 'auto',
                   backgroundColor: 'white',
@@ -164,6 +202,21 @@ const Navbar = ({
               >
                 Vinos
               </Button>
+
+              <Button
+                onClick={onPayClick}
+                variant="contained"
+                disabled={!arePedidosComplete()} // Deshabilitar el botón si los pedidos no están completos
+                sx={{
+                  backgroundColor: 'white',
+                  color: '#620375',
+                  fontWeight: '700',
+                  border: '2px solid #620375',
+                  marginRight: '10px',
+                }}
+              >
+                ¡Valora tus platos!
+              </Button>
               <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
                 <IconButton onClick={onCartClick}>
                   <Badge badgeContent={cartCount} color="error">
@@ -183,6 +236,7 @@ const Navbar = ({
                   <MenuItem key={index} value={category}>{category}</MenuItem>
                 ))}
               </Select>
+              
 
 
             </div>
@@ -243,8 +297,7 @@ const Navbar = ({
               <Button
                 variant="contained"
                 color="primary"
-                component={Link}
-                to={linkTo} // Cambia la ruta dependiendo de la página actual
+                onClick={handleNavigation}  // Usar el handleNavigation para hacer la navegación
                 sx={{
                   margin: '0 10px',
                   backgroundColor: 'white',
@@ -261,6 +314,21 @@ const Navbar = ({
               Mis Pedidos
             </Button>
 
+            <Button
+                onClick={onPayClick}
+                variant="contained"
+                disabled={!arePedidosComplete()} // Deshabilitar el botón si los pedidos no están completos
+                sx={{
+                  backgroundColor: 'white',
+                  color: '#620375',
+                  fontWeight: '700',
+                  border: '2px solid #620375',
+                  marginLeft: '10px',
+                }}
+              >
+                ¡Valora tus Platos!
+              </Button>
+
             <IconButton onClick={onCartClick}>
               <Badge badgeContent={cartCount} color="error">
                 <ShoppingCartIcon sx={{ color: '#620375' }} />
@@ -270,35 +338,35 @@ const Navbar = ({
             {/* Aquí mostramos los pedidos en un modal si es pantalla grande */}
             <Dialog open={isOrdersModalOpen} onClose={closeOrdersModal}>
               <DialogContent>
-              {(pedidos.length > 0 || pedidosBebidas.length > 0) ? (
-                    <>
-                      {/* Mostrar pedidos de platos */}
-                      {pedidos.length > 0 && pedidos.some(pedido => pedido.platos?.length > 0) && pedidos.map((pedido, index) => (
-                        <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
-                          <strong>Platos:</strong>
-                          {pedido.platos.map((plato, idx) => (
-                            <div key={idx} style={{ marginLeft: '10px' }}>
-                              <span>{plato.nombre}</span> x{plato.cantidad}
-                            </div>
-                          ))}
-                        </Box>
-                      ))}
+                {(pedidos.length > 0 || pedidosBebidas.length > 0) ? (
+                  <>
+                    {/* Mostrar pedidos de platos */}
+                    {pedidos.length > 0 && pedidos.some(pedido => pedido.platos?.length > 0) && pedidos.map((pedido, index) => (
+                      <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
+                        <strong>Platos:</strong>
+                        {pedido.platos.map((plato, idx) => (
+                          <div key={idx} style={{ marginLeft: '10px' }}>
+                            <span>{plato.nombre}</span> x{plato.cantidad}
+                          </div>
+                        ))}
+                      </Box>
+                    ))}
 
-                      {/* Mostrar pedidos de bebidas */}
-                      {pedidosBebidas.length > 0 && pedidosBebidas.some(pedido => pedido.bebidas?.length > 0) && pedidosBebidas.map((pedido, index) => (
-                        <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
-                          <strong>Bebidas:</strong>
-                          {pedido.bebidas.map((bebida, idx) => (
-                            <div key={idx} style={{ marginLeft: '10px' }}>
-                              <span>{bebida.nombre}</span> x{bebida.cantidad}
-                            </div>
-                          ))}
-                        </Box>
-                      ))}
-                    </>
-                  ) : (
-                    <div>No hay pedidos.</div>
-                  )}
+                    {/* Mostrar pedidos de bebidas */}
+                    {pedidosBebidas.length > 0 && pedidosBebidas.some(pedido => pedido.bebidas?.length > 0) && pedidosBebidas.map((pedido, index) => (
+                      <Box key={index} sx={{ marginBottom: '10px', padding: '10px', borderBottom: '2px solid #620375' }}>
+                        <strong>Bebidas:</strong>
+                        {pedido.bebidas.map((bebida, idx) => (
+                          <div key={idx} style={{ marginLeft: '10px' }}>
+                            <span>{bebida.nombre}</span> x{bebida.cantidad}
+                          </div>
+                        ))}
+                      </Box>
+                    ))}
+                  </>
+                ) : (
+                  <div>No hay pedidos.</div>
+                )}
               </DialogContent>
             </Dialog>
           </Box>

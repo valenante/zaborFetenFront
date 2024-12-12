@@ -13,7 +13,8 @@ const PlatoOptions = ({
   handlePuntosDeCoccionChange,
   mostrarEspecificaciones,
   mostrarTamaño,
-  setTipoPlato
+  setTipoPlato,
+  setIngredientes
 }) => {
   // Configurar valores predeterminados
   useEffect(() => {
@@ -88,6 +89,30 @@ const PlatoOptions = ({
             </Select>
           </FormControl>
         )}
+
+
+      {plato.saboresDisponibles && plato.nombre === "Croquetas" && (
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Sabor</InputLabel>
+          <Select
+            value={selectedOptions.sabor || ''}
+            onChange={(e) => {
+              const newSabor = e.target.value;
+              handleOptionChange('sabor', newSabor);
+              // Sobrescribir ingredientes con el nuevo sabor
+              setIngredientes([newSabor]);
+            }}
+            label="Sabor"
+          >
+            {plato.saboresDisponibles.map((sabor, index) => (
+              <MenuItem key={index} value={sabor}>
+                {sabor}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
+
 
       {/* Opciones personalizables */}
       {plato.nombre !== 'Surtido de Croquetas' &&

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Snackbar, FormControlLabel, Checkbox, Select, MenuItem } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Snackbar, FormControlLabel, Checkbox, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/Plato.css';
 
 const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
-  const [selectedSize, setSelectedSize] = useState('');  // Para tamaño de bebida, si es necesario
-  const [precio, setPrecio] = useState(0);
+  const [selectedSize, setSelectedSize] = useState('copa');  // Se establece "copa" por defecto
+  const [precio, setPrecio] = useState(bebida.precio);  // Precio inicial de la bebida
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,7 +32,6 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
   useEffect(() => {
     if (bebida.precios) {
       setPrecio(bebida.precios.precio);
-      setSelectedSize('precio');
     }
   }, [bebida.precios]);
 
@@ -55,13 +54,24 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
     setCantidad(e.target.value);
   };
 
+  const handleSizeChange = (event) => {
+    const selected = event.target.value;
+    setSelectedSize(selected);
+
+    // Actualiza el precio según el tamaño seleccionado (Copa o Botella)
+    if (selected === 'copa') {
+      setPrecio(bebida.precioCopa);  // Precio para la copa
+    } else if (selected === 'botella') {
+      setPrecio(bebida.precioBotella);  // Asegúrate de tener "precioBotella" en los datos de la bebida
+    }
+  };
 
   const handleAddToCart = () => {
     const bebidaParaCarrito = {
       mesa: mesa,
       _id: bebida._id,
       nombre: bebida.nombre,
-      precio: bebida.precio,
+      precio: precio * cantidad,  // Precio basado en la cantidad seleccionada
       descripcion: bebida.descripcion,
       categoria: bebida.categoria,
       especificaciones: bebida.especificaciones || [],
@@ -92,7 +102,7 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
             <img src={`http://192.168.1.132:3000/${bebida.img}`} alt={bebida.nombre} className="img-fluid rounded-img" />
           )}
           <div className="plato-price mt-2">
-            <div>{bebida.precio && `$${bebida.precio.toFixed(2)}`}</div>
+            <div>{bebida.precio && `$${precio}`}</div>
           </div>
         </div>
 
@@ -111,6 +121,29 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
         <DialogTitle className="plato-modal-title">{bebida.nombre}</DialogTitle>
         <DialogContent>
           <div>{bebida.descripcion}</div>
+
+          {/* Selección de tamaño (Copa o Botella) si es vino */}
+          {bebida.categoria.toLowerCase().includes("vino") && (
+            <FormControl fullWidth>
+              <InputLabel id="size-label">Selecciona el tamaño</InputLabel>
+              <Select
+                labelId="size-label"
+                value={selectedSize}
+                onChange={handleSizeChange}
+                label="Selecciona el tamaño"
+              >
+                <MenuItem value="copa">Copa</MenuItem>
+                <MenuItem value="botella">Botella</MenuItem>
+              </Select>
+            </FormControl>
+          )}
+
+          {/* Muestra el precio correspondiente a la selección */}
+          {['vino blanco', 'vino tinto'].includes(bebida.categoria) && (
+            <div className="mt-2">
+              <strong>Precio:</strong> ${precio}
+            </div>
+          )}
 
           {/* Selección de refresco o "Tomar solo" */}
           {['ron', 'whisky', 'vodka', 'ginebra', 'licor'].includes(bebida.categoria) && (
@@ -138,6 +171,7 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
               )}
             </>
           )}
+
           {/* Input para seleccionar la cantidad */}
           <div className="mt-3">
             <label htmlFor="cantidad">Cantidad:</label>
@@ -175,9 +209,7 @@ const BebidaCard = ({ bebida, onAddToCart, mesa }) => {
         }}
       />
     </div>
-
   );
-}
-
+};
 
 export default BebidaCard;

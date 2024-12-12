@@ -97,3 +97,74 @@ form {
     justify-content: center;
     padding: 5rem; /* Espacio interno */
 }
+
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .about-us-section{
+        height: fit-content ; /* Ajuste en la altura de la sección */
+    }
+
+    .background-section{
+        width: 100%;
+    }
+
+    .background-section h1 {
+        font-size: 3rem; /* Reduce el tamaño del título */
+    }
+
+    .background-section p {
+        font-size: 1.5rem; /* Ajuste para pantallas más pequeñas */
+    }
+
+    .about-us-section h3 {
+        font-size: 1.8rem; /* Ajuste en el tamaño del título */
+    }
+
+    .texto {
+        width: 80%; /* Aumentar el ancho para pantallas más pequeñas */
+        font-size: 1rem; /* Reducir el tamaño del texto */
+    }
+
+    .opening-hours-row h2 {
+        font-size: 1.5rem; /* Ajustar tamaño del texto */
+    }
+
+    form {
+        padding: 15px; /* Ajuste en el padding */
+    }
+
+    .contact{
+        margin-top: 8rem;
+        padding: 20px; /* Ajuste en el padding */
+    }
+
+    .contact-info {
+        width: 1005;
+        padding-right: 10px; /* Ajuste en el padding */
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .background-section h1 {
+        font-size: 2.5rem; /* Ajuste más agresivo para pantallas muy pequeñas */
+    }
+
+    .background-section p {
+        font-size: 1.2rem;
+    }
+
+    .texto {
+        width: 90%; /* Asegurar que el texto no quede fuera de la pantalla */
+    }
+
+    .btn-primary {
+        width: 100%; /* Hacer el botón de envío más grande */
+    }
+
+    .contact{
+        margin-top: 10rem;
+        padding: 20px; /* Ajuste en el padding */
+    }
+}

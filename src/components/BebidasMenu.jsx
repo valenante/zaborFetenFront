@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import BebidaCard from './BebidaCard';
 import Cart from './Cart';
 import { Dialog, DialogContent, Snackbar } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 const BebidasMenu = () => {
   const [bebidas, setBebidas] = useState([]);
@@ -12,8 +13,33 @@ const BebidasMenu = () => {
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const [mesaId, setMesaId] = useState(null); // Nuevo estado para almacenar el id de la mesa
+  const [mesaEstado, setMesaEstado] = useState('');
+  const mesaFromUrl = searchParams.get('mesa');
+
 
   const mesa = localStorage.getItem('mesaId'); // Si la URL no tiene la mesa, la obtenemos de localStorage
+
+  useEffect(() => {
+    if (mesaFromUrl) {
+      // Realizar la consulta para obtener la mesa por el número
+      axios.get(`http://192.168.1.132:3000/api/mesas/numero/${mesaFromUrl}`)
+        .then(response => {
+          const mesa = response.data;
+          if (mesa && mesa.id) {
+            setMesaId(mesa.id); // Guardar el id de la mesa en el estado
+            setMesaEstado(mesa.estado);
+          } else {
+            console.error('No se encontró una mesa con el número especificado.');
+          }
+        })
+        .catch(error => {
+          console.error('Error al obtener la mesa por número:', error);
+        });
+    }
+  }, [mesaFromUrl]);
 
   //UseEffect para abrir la mesa con su id
   useEffect(() => {
@@ -103,8 +129,8 @@ const BebidasMenu = () => {
     }));
 
     // Calcular totales
-    const totalPlatos = platosParaEnviar.reduce((acc, plato) => acc + (plato.precios[0] || 0) * plato.cantidad, 0);
-    const totalBebidas = bebidasParaEnviar.reduce((acc, bebida) => acc + bebida.precio * bebida.cantidad, 0);
+    const totalPlatos = platosParaEnviar.reduce((acc, plato) => acc + plato.precios[0], 0);
+    const totalBebidas = bebidasParaEnviar.reduce((acc, bebida) => acc + bebida.precio, 0);
 
     if (!mesa) {
       console.error("El campo 'mesa' es obligatorio");
@@ -112,12 +138,13 @@ const BebidasMenu = () => {
     }
 
     try {
-      // Crear pedido de platos
       if (platosParaEnviar.length > 0) {
         const responsePlatos = await axios.post("http://192.168.1.132:3000/api/pedidos", {
-          mesa,
+          mesa: mesaId,
           platos: platosParaEnviar,
           total: totalPlatos.toFixed(2),
+          comensales: platosParaEnviar[0].comensales,
+          alergias: platosParaEnviar[0].alergias,
         });
 
         if (responsePlatos.data && responsePlatos.data.message) {
@@ -125,24 +152,24 @@ const BebidasMenu = () => {
         }
       }
 
-      // Crear pedido de bebidas
+
       if (bebidasParaEnviar.length > 0) {
         const responseBebidas = await axios.post("http://192.168.1.132:3000/api/pedidoBebidas", {
-          mesa,
+          mesa: mesaId,
           bebidas: bebidasParaEnviar,
           total: totalBebidas.toFixed(2),
         });
 
         if (responseBebidas.data && responseBebidas.data.message) {
-          console.log('Pedido de bebidas creado:', responseBebidas.data.message);
+            console.log('Pedido de bebidas creado:', responseBebidas.data.message);
         }
-      }
+    }
 
-      // Limpiar carrito y mostrar mensaje
       setSnackbarMessage('Pedido enviado con éxito.');
       setOpenSnackbar(true);
       setCart([]);
       localStorage.removeItem('cart');
+      window.location.reload();
     } catch (error) {
       console.error('Error al realizar el pedido:', error);
       setSnackbarMessage('Error al enviar el pedido.');

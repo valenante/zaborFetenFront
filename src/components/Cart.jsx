@@ -3,6 +3,7 @@ import { CardContent, Typography, Button, List, ListItem, ListItemText, Divider,
 import MuiAlert from '@mui/material/Alert';
 
 const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
+  console.log(cart);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [acompañantes, setAcompañantes] = useState({}); // Estado para almacenar los nombres de acompañantes por ID
@@ -41,6 +42,7 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
       return total + item.precio;
     }, 0).toFixed(2);
   };
+
 
   const handleSendOrder = async () => {
     try {
@@ -82,10 +84,10 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
                     <Typography variant="body1" style={{ color: '#555' }}>Cantidad: {plato.cantidad}</Typography>
                     <Typography variant="body2" style={{ color: '#555' }}>Precio: ${plato.precio}</Typography>
                     {/* Muestra ingredientes si existen */}
-                    {plato.ingredientes && (
+                    {plato.ingredientesEliminados.length > 0 && (
                       <>
-                        <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>Ingredientes:</Typography>
-                        {plato.ingredientes.map((ingrediente, index) => (
+                        <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>Sin:</Typography>
+                        {plato.ingredientesEliminados.map((ingrediente, index) => (
                           <Typography key={index} variant="body2" style={{ color: '#777' }}>- {ingrediente}</Typography>
                         ))}
                       </>
@@ -126,15 +128,6 @@ const Cart = ({ cart, onRemoveFromCart, sendOrder, setCart }) => {
                   <>
                     <Typography variant="body1" style={{ color: '#555' }}>Cantidad: {bebida.cantidad}</Typography>
                     <Typography variant="body2" style={{ color: '#555' }}>Precio: ${bebida.precio}</Typography>
-                    {/* Muestra ingredientes si existen */}
-                    {bebida.ingredientes && (
-                      <>
-                        <Typography variant="body2" style={{ fontWeight: 'bold', color: '#54146c', marginTop: '10px' }}>Ingredientes:</Typography>
-                        {bebida.ingredientes.map((ingrediente, index) => (
-                          <Typography key={index} variant="body2" style={{ color: '#777' }}>- {ingrediente}</Typography>
-                        ))}
-                      </>
-                    )}
                     {/* Muestra acompañante si existe */}
                     {bebida.acompañante && <ListItemText><Typography variant="body2" style={{ color: '#555', marginTop: '10px' }}>
                       Acompañante: {acompañantes[bebida.acompañante] || ''}

@@ -16,7 +16,7 @@ const MenuPage = () => {
   const [mesaId, setMesaId] = useState(null); // Nuevo estado para almacenar el id de la mesa
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  console.log(mesaId)
+  const [ingredientes, setIngredientes] = useState([]);
   // Obtener el número de mesa de la URL
   const mesaFromUrl = searchParams.get('mesa');
 
@@ -106,15 +106,15 @@ const MenuPage = () => {
       console.error("El ID de la mesa es obligatorio");
       return;
     }
-
+  
     const platos = cart.filter(item => item.tipo === 'plato' || item.tipo === 'tapa' || item.tipo === 'racion');
     const bebidas = cart.filter(item => item.tipo === 'bebida');
-
+  
     const platosParaEnviar = platos.map(plato => ({
       platoId: plato._id,
       nombre: plato.nombre,
       cantidad: plato.cantidad || 1,
-      ingredientes: plato.ingredientes,
+      ingredientes,
       ingredientesEliminados: plato.ingredientesEliminados,
       descripcion: plato.descripcion,
       size: plato.size,
@@ -126,8 +126,9 @@ const MenuPage = () => {
       alergias: plato.alergias,
       comensales: plato.comensales,
       tipoServicio: plato.tipoServicio,
+      croquetas: plato.croquetas,
     }));
-
+  
     const bebidasParaEnviar = bebidas.map(bebida => ({
       bebidaId: bebida._id,
       nombre: bebida.nombre,
@@ -139,11 +140,12 @@ const MenuPage = () => {
       precio: bebida.precio,
       categoria: bebida.categoria,
     }));
-
-    const totalPlatos = platosParaEnviar.reduce((acc, plato) => acc + (plato.precios[0] || 0) * plato.cantidad, 0);
+  
+    const totalPlatos = platosParaEnviar.reduce((acc, plato) => acc + plato.precios[0] * plato.cantidad, 0);
     const totalBebidas = bebidasParaEnviar.reduce((acc, bebida) => acc + bebida.precio * bebida.cantidad, 0);
-
+  
     try {
+      // Enviar platos
       if (platosParaEnviar.length > 0) {
         const responsePlatos = await axios.post("http://192.168.1.132:3000/api/pedidos", {
           mesa: mesaId,
@@ -152,12 +154,9 @@ const MenuPage = () => {
           comensales: platosParaEnviar[0].comensales,
           alergias: platosParaEnviar[0].alergias,
         });
-
-        if (responsePlatos.data && responsePlatos.data.message) {
-          console.log('Pedido de platos creado:', responsePlatos.data.message);
-        }
       }
-
+  
+      // Enviar bebidas
       if (bebidasParaEnviar.length > 0) {
         const responseBebidas = await axios.post("http://192.168.1.132:3000/api/pedidoBebidas", {
           mesa: mesaId,
@@ -165,11 +164,8 @@ const MenuPage = () => {
           total: totalBebidas.toFixed(2),
         });
 
-        if (responseBebidas.data && responseBebidas.data.message) {
-          console.log('Pedido de bebidas creado:', responseBebidas.data.message);
-        }
       }
-
+  
       setSnackbarMessage('Pedido enviado con éxito.');
       setOpenSnackbar(true);
       setCart([]);
@@ -180,7 +176,8 @@ const MenuPage = () => {
       setOpenSnackbar(true);
     }
   };
-
+  
+  
   const toggleCartVisibility = () => {
     setIsCartVisible(!isCartVisible);
   };
@@ -201,7 +198,7 @@ const MenuPage = () => {
             (!selectedCategory || plato.categoria === selectedCategory) && plato.estado === 'habilitado'
           )
           .map(plato => (
-            <PlatoCard key={plato._id} plato={plato} onAddToCart={addToCart} />
+            <PlatoCard key={plato._id} plato={plato} onAddToCart={addToCart} ingredientes={ingredientes} setIngredientes={setIngredientes} />
           ))}
       </div>
 
